@@ -56,10 +56,10 @@ router.get('/.well-known/webfinger', (req, res) => {
   }
 
   if (!req.query.resource) {
-    res.status(400).send();
+    res.status(400).send()
     return
-  } else if (req.query.resource != "acct:keyoxide@keyoxide.org") {
-    res.status(404).send();
+  } else if (req.query.resource !== 'acct:keyoxide@keyoxide.org') {
+    res.status(404).send()
     return
   }
 
