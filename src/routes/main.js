@@ -55,6 +55,14 @@ router.get('/.well-known/webfinger', (req, res) => {
     return
   }
 
+  if (!req.query.resource) {
+    res.status(400).send();
+    return
+  } else if (req.query.resource != "acct:keyoxide@keyoxide.org") {
+    res.status(404).send();
+    return
+  }
+
   const body = {
     subject: `acct:keyoxide@${process.env.DOMAIN}`,
     aliases: [`https://${process.env.DOMAIN}/users/keyoxide`],
@@ -87,7 +95,7 @@ router.get('/users/keyoxide', (req, res) => {
     id: `https://${process.env.DOMAIN}/users/keyoxide`,
     type: 'Application',
     inbox: `https://${process.env.DOMAIN}/users/keyoxide/inbox`,
-    preferredUsername: `${process.env.DOMAIN}`,
+    preferredUsername: 'keyoxide',
     publicKey: {
       id: `https://${process.env.DOMAIN}/users/keyoxide#main-key`,
       owner: `https://${process.env.DOMAIN}/users/keyoxide`,
