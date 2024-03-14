@@ -55,23 +55,31 @@ router.get('/.well-known/webfinger', (req, res) => {
     return
   }
 
+  const body = {
+    subject: `acct:keyoxide@${process.env.DOMAIN}`,
+    aliases: [`https://${process.env.DOMAIN}/users/keyoxide`],
+    links: [
+      {
+        rel: 'self',
+        type: 'application/activity+json',
+        href: `https://${process.env.DOMAIN}/users/keyoxide`
+      }, {
+        rel: 'self',
+        type: 'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
+        href: `https://${process.env.DOMAIN}/users/keyoxide`
+      }
+    ]
+  }
+
   if (!req.query.resource) {
     res.status(400).send()
     return
-  } else if (req.query.resource !== 'acct:keyoxide@keyoxide.org') {
+  } else if (![body.subject, ...body.aliases].includes(req.query.resource)) {
     res.status(404).send()
     return
   }
 
-  const body = {
-    subject: `acct:keyoxide@${process.env.DOMAIN}`,
-    aliases: [`https://${process.env.DOMAIN}/users/keyoxide`],
-    links: [{
-      rel: 'self',
-      type: 'application/activity+json',
-      href: `https://${process.env.DOMAIN}/users/keyoxide`
-    }]
-  }
+  res.set('Content-Type', 'application/jrd+json')
   res.json(body)
 })
 
