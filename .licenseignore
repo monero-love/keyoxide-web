@@ -10,7 +10,7 @@ dist/
 logs/
 
 package.json
-yarn.lock
+package-lock.json
 robots.txt
 \.licenseignore
 \.woodpecker.yml

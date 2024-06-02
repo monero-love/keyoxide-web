@@ -3,9 +3,9 @@ FROM node:20-alpine as builder
 WORKDIR /app
 COPY . .
 
-RUN yarn --pure-lockfile
-RUN yarn run build:server
-RUN yarn run build:static
+RUN npm ci
+RUN npm run build:server
+RUN npm run build:static
 
 ###
 

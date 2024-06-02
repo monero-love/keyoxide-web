@@ -15,13 +15,13 @@ Self-hosting Keyoxide is an important aspect of the project. Users need to trust
 
 ### Docker
 
-The Docker container allows you to easily self-host the [Keyoxide](https://keyoxide.org) project. To get started, simply run:
+The Docker container allows you to easily self-host the [Keyoxide](https://keyoxide.org) project. To get started, run:
 
 ```sh
 docker run -d -p 3000:3000 codeberg.org/keyoxide/keyoxide-web:latest
 ```
 
-Keyoxide will now be available by visiting http://localhost:3000.
+Keyoxide will now be available at [http://localhost:3000](localhost:3000).
 
 More information available in the [documentation](https://docs.keyoxide.org/guides/self-hosting/).
 
@@ -34,9 +34,29 @@ Install `node` in one of the following ways:
   - using [nvm](https://github.com/nvm-sh/nvm)
   - directly from their [website](https://nodejs.org/)
 
-Install dependencies with `npm install` or `yarn`.
+Install the dependencies and run the server:
 
-Run the server with `npm dev` or `yarn dev`. The Keyoxide web client will now be available at [https://localhost:3000](https://localhost:3000).
+```sh
+npm install
+npm run dev
+```
+
+The web client will now be available at [http://localhost:3000](localhost:3000).
+
+### Using nix
+
+Enter a development shell:
+
+```sh
+nix develop
+npm run dev
+```
+
+Alternatively, start a local server directly:
+
+```sh
+nix develop --command bash -c "npm run dev"
+```
 
 ## Contributing
 
