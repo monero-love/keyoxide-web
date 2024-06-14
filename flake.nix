@@ -17,12 +17,15 @@
         devShell = with pkgs; mkShell {
           buildInputs = [
             nodejs_20
+            biome
           ];
 
           shellHook = ''
             echo "node: `${nodejs_20}/bin/node --version`"
             echo "npm:  `${nodejs_20}/bin/npm --version`"
           '';
+
+          BIOME_BINARY = "${pkgs.biome}/bin/biome";
         };
       });
 }
