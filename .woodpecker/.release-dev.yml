@@ -2,7 +2,7 @@ when:
   branch: dev
   event: push
 steps:
-  build-latest-container:
+  build-dev-container:
     image: woodpeckerci/plugin-docker-buildx
     settings:
       registry: https://codeberg.org/v2
