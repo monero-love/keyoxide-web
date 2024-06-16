@@ -2,10 +2,9 @@ when:
   event: tag
   evaluate: 'not (CI_COMMIT_TAG contains "-rc.")'
 steps:
-  build-latest-container:
+  publish-latest-container:
     image: woodpeckerci/plugin-docker-buildx
     settings:
-      dry-run: true
       registry: https://codeberg.org/v2
       username:
         from_secret: codeberg_username
