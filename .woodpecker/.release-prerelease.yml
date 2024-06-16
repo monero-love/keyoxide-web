@@ -12,7 +12,7 @@ steps:
       password:
         from_secret: codeberg_password
       repo: codeberg.org/keyoxide/keyoxide-web
-      default_tag: "next"
+      default_tag: next
       auto_tag: true
       build_args_from_env:
         - CI_COMMIT_SHA
