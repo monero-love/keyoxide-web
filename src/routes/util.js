@@ -32,60 +32,60 @@ import { escapedParam, getMetaFromReq } from '../server/utils.js'
 
 const router = express.Router()
 
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
   res.render('util/index', { meta: getMetaFromReq(req) })
 })
-router.get('/profile-url', function (req, res) {
+router.get('/profile-url', (req, res) => {
   res.render('util/profile-url', { meta: getMetaFromReq(req) })
 })
 router.get('/profile-url/:input',
   escapedParam('input'),
-  function (req, res) {
+  (req, res) => {
     res.render('util/profile-url', { input: req.params.input, meta: getMetaFromReq(req) })
   })
 
-router.get('/qr', function (req, res) {
+router.get('/qr', (req, res) => {
   res.render('util/qr', { meta: getMetaFromReq(req) })
 })
 router.get('/qr/:input',
   escapedParam('input'),
-  function (req, res) {
+  (req, res) => {
     res.render('util/qr', { input: req.params.input, meta: getMetaFromReq(req) })
   })
 
-router.get('/qrfp', function (req, res) {
+router.get('/qrfp', (req, res) => {
   res.render('util/qrfp', { meta: getMetaFromReq(req) })
 })
 router.get('/qrfp/:input',
   escapedParam('input'),
-  function (req, res) {
+  (req, res) => {
     res.render('util/qrfp', { input: req.params.input, meta: getMetaFromReq(req) })
   })
 
-router.get('/wkd', function (req, res) {
+router.get('/wkd', (req, res) => {
   res.render('util/wkd', { meta: getMetaFromReq(req) })
 })
 router.get('/wkd/:input',
   escapedParam('input'),
-  function (req, res) {
+  (req, res) => {
     res.render('util/wkd', { input: req.params.input, meta: getMetaFromReq(req) })
   })
 
-router.get('/argon2', function (req, res) {
+router.get('/argon2', (req, res) => {
   res.render('util/argon2', { meta: getMetaFromReq(req) })
 })
 router.get('/argon2/:input',
   escapedParam('input'),
-  function (req, res) {
+  (req, res) => {
     res.render('util/argon2', { input: req.params.input, meta: getMetaFromReq(req) })
   })
 
-router.get('/bcrypt', function (req, res) {
+router.get('/bcrypt', (req, res) => {
   res.render('util/bcrypt', { meta: getMetaFromReq(req) })
 })
 router.get('/bcrypt/:input',
   escapedParam('input'),
-  function (req, res) {
+  (req, res) => {
     res.render('util/bcrypt', { input: req.params.input, meta: getMetaFromReq(req) })
   })
 

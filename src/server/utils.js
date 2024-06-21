@@ -27,7 +27,7 @@ You should also get your employer (if you work as a programmer) or school,
 if any, to sign a "copyright disclaimer" for the program, if necessary. For
 more information on this, and how to apply and follow the GNU AGPL, see <https://www.gnu.org/licenses/>.
 */
-import { webcrypto as crypto } from 'crypto'
+import { webcrypto as crypto } from 'node:crypto'
 import { Profile } from 'doipjs'
 import Color from 'colorjs.io'
 import { param } from 'express-validator'

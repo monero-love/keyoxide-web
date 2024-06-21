@@ -205,16 +205,16 @@ const generateKeybaseProfile = async (username, fingerprint) => {
 }
 
 const processAspProfile = async (/** @type {import('doipjs').Profile */ profile) => {
-  profile.personas.forEach(persona => {
+  for (const persona of profile.personas) {
     // Remove faulty claims
     persona.claims = persona.claims.filter(claim => {
       return claim instanceof doipjs.Claim
     })
 
     // Match claims
-    persona.claims.forEach(claim => {
+    for (const claim of persona.claims) {
       claim.match()
-    })
+    }
 
     // Sort claims
     persona.claims.sort((a, b) => {
@@ -229,7 +229,7 @@ const processAspProfile = async (/** @type {import('doipjs').Profile */ profile)
       }
       return 0
     })
-  })
+  }
 
   // Overwrite avatarUrl
   // TODO: don't overwrite avatarUrl once it's fully supported
@@ -240,16 +240,16 @@ const processAspProfile = async (/** @type {import('doipjs').Profile */ profile)
 }
 
 const processOpenPgpProfile = async (/** @type {import('doipjs').Profile */ profile) => {
-  profile.personas.forEach(persona => {
+  for (const persona of profile.personas) {
     // Remove faulty claims
     persona.claims = persona.claims.filter(claim => {
       return claim instanceof doipjs.Claim
     })
 
     // Match claims
-    persona.claims.forEach(claim => {
+    for (const claim of persona.claims) {
       claim.match()
-    })
+    }
 
     // Sort claims
     persona.claims.sort((a, b) => {
@@ -264,7 +264,7 @@ const processOpenPgpProfile = async (/** @type {import('doipjs').Profile */ prof
       }
       return 0
     })
-  })
+  }
 
   // Overwrite avatarUrl
   // TODO: don't overwrite avatarUrl once it's fully supported

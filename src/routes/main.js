@@ -29,7 +29,7 @@ more information on this, and how to apply and follow the GNU AGPL, see <https:/
 */
 import express from 'express'
 import markdownImport from 'markdown-it'
-import { readFileSync } from 'fs'
+import { readFileSync } from 'node:fs'
 import { getMetaFromReq } from '../server/utils.js'
 
 const router = express.Router()
@@ -74,7 +74,8 @@ router.get('/.well-known/webfinger', (req, res) => {
   if (!req.query.resource) {
     res.status(400).send()
     return
-  } else if (![body.subject, ...body.aliases].includes(req.query.resource)) {
+  }
+  if (![body.subject, ...body.aliases].includes(req.query.resource)) {
     res.status(404).send()
     return
   }

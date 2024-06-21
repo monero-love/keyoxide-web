@@ -77,9 +77,9 @@ const doVerification = async (profile) => {
   }
   await Promise.all(promises)
 
-  results.forEach(result => {
+  for (const result of results) {
     profile.personas[result[0]].claims[result[1]] = result[2]
-  })
+  }
 
   return profile
 }

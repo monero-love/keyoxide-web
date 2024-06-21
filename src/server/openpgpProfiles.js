@@ -32,7 +32,7 @@ import got from 'got'
 import * as doipjs from 'doipjs'
 import { readKey } from 'openpgp'
 import { computeWKDLocalPart } from './utils.js'
-import { createHash } from 'crypto'
+import { createHash } from 'node:crypto'
 import Keyv from 'keyv'
 
 let c = null
@@ -82,9 +82,8 @@ const fetchWKD = (id) => {
             if (response.statusCode === 200) {
               fetchURL = urlAdvanced
               return new Uint8Array(response.rawBody)
-            } else {
-              return null
             }
+            return null
           })
         } catch (errorAdvanced) {
           logger.debug('Failed to fetch an OpenPGP profile via WKD (advanced URL)',
@@ -95,9 +94,8 @@ const fetchWKD = (id) => {
               if (response.statusCode === 200) {
                 fetchURL = urlDirect
                 return new Uint8Array(response.rawBody)
-              } else {
-                return null
               }
+              return null
             })
           } catch (errorDirect) {
             logger.debug('Failed to fetch an OpenPGP profile via WKD (direct URL)',
