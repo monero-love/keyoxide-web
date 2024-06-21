@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.0-rc.1] - 2024-06-16
+### Added
+- SystemD service file
+- Nix flake for development
+### Changed
+- Switch from yarn to npm
+- Update doipjs to 2.0.0-rc.1
+### Fixed
+- Escape URL parameters
+- CI config
+### Notes
+- This release is a major version release as the package manager has been switched from yarn to npm.
+
 ## [4.2.7] - 2024-02-01
 ### Added
 - Server version HTTP endpoint
