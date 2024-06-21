@@ -65,7 +65,7 @@ const doVerification = async (profile) => {
       const claim = user.claims[iClaim]
 
       promises.push(
-        new Promise((resolve, reject) => {
+        new Promise((resolve) => {
           (async () => {
             await claim.verify(verificationOptions)
             results.push([iUser, iClaim, claim])

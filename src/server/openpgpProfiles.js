@@ -256,7 +256,7 @@ const fetchKeybase = (username, fingerprint) => {
         profile = await doipjs.openpgp.fetchKeybase(username, fingerprint)
         fetchURL = `https://keybase.io/${username}/pgp_keys.asc?fingerprint=${fingerprint}`
       } catch (error) {
-        return reject(new Error('No public keys could be fetched from Keybase'))
+        return reject(new Error(`No public keys could be fetched from Keybase (${error})`))
       }
 
       if (!profile) {

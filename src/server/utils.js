@@ -43,7 +43,7 @@ export function generatePageTitle (type, data) {
     case 'profile':
       try {
         return `${data.personas[data.primaryPersonaIndex].name} - Keyoxide`
-      } catch (error) {
+      } catch (_err) {
         return 'Profile - Keyoxide'
       }
 

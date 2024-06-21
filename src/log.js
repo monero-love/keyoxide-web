@@ -32,7 +32,7 @@ import * as httpContext from 'express-http-context2'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-const anonymize = format((info, opts) => {
+const anonymize = format((info) => {
   if (process.env.NODE_ENV !== 'development') {
     info.profile_id = undefined
     info.keyserver_domain = undefined
@@ -44,7 +44,7 @@ const anonymize = format((info, opts) => {
   return info
 })
 
-const addRequestData = format((info, opts) => {
+const addRequestData = format((info) => {
   if (httpContext.get('requestId')) info.request_id = httpContext.get('requestId')
   if (httpContext.get('requestPath')) info.request_path = httpContext.get('requestPath')
   if (httpContext.get('requestIp')) info.request_ip = httpContext.get('requestIp')

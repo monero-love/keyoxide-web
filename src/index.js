@@ -49,13 +49,19 @@ let gitBranch = process.env.CI_COMMIT_BRANCH ?? process.env.COMMIT_BRANCH
 if (!gitBranch) {
   try {
     gitBranch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim()
-  } catch (_) {}
+  } catch (_err) {
+    logger.debug('Could not get git branch',
+      { component: 'http_server', action: 'init' })
+  }
 }
 let gitHash = process.env.CI_COMMIT_SHA ?? process.env.COMMIT_SHA
 if (!gitHash) {
   try {
     gitHash = execSync('git rev-parse HEAD').toString().trim()
-  } catch (_) {}
+  } catch (_err) {
+    logger.debug('Could not get git hash',
+      { component: 'http_server', action: 'init' })
+  }
 }
 
 const app = express()
