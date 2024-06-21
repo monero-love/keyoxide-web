@@ -5,4 +5,5 @@ steps:
     image: node:20
     commands:
       - npm ci
+      - npx @biomejs/biome ci ./src
       - npm test

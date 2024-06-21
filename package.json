@@ -28,6 +28,7 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.8.2",
     "@vercel/ncc": "^0.34.0",
     "chai": "^4.3.6",
     "copy-webpack-plugin": "^11.0.0",
@@ -55,9 +56,11 @@
     "build:server": "ncc build ./src/index.js -o dist",
     "build:static": "webpack --config webpack.config.js --env static=true --env mode=production",
     "build:static:dev": "webpack --config webpack.config.js --env static=true --env mode=development",
-    "lint": "npm run standard:check",
+    "lint": "npm run standard:check & npm run biome:check",
     "standard:check": "standard ./src",
     "standard:fix": "standard --fix ./src",
+    "biome:check": "npx @biomejs/biome check ./src",
+    "biome:fix": "npx @biomejs/biome check --apply ./src",
     "license:check": "license-check-and-add check",
     "license:add": "license-check-and-add add",
     "license:remove": "license-check-and-add remove"
