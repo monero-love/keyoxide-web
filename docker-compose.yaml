@@ -6,27 +6,17 @@ version: '3'
 
 services:
   keyoxide:
-    image: keyoxide/keyoxide:latest
+    image: codeberg.org/keyoxide/keyoxide-web:latest
     restart: unless-stopped
     ports:
       - 3000:3000
     environment:
       - DOMAIN=
-      ## The hostname to reach the doip_proxy container below
-      # - PROXY_HOSTNAME=
       ## The onion URL to advertise in the HTTP response headers
       # - ONION_URL=
-      ## The key to sign ActivityPub requests
-      # - ACTIVITYPUB_PUBLIC_KEY=
-
-  doip_proxy:
-    image: keyoxide/doip-proxy:latest
-    restart: unless-stopped
-    ports:
-      - 3001:3000
-    # environment:
       ## For ActivityPub verification
       # - ACTIVITYPUB_URL=
+      # - ACTIVITYPUB_PUBLIC_KEY=
       # - ACTIVITYPUB_PRIVATE_KEY=
       ## For IRC verification
       # - IRC_NICK=
