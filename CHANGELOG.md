@@ -6,18 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [5.0.0-rc.1] - 2024-06-16
+## [5.0.0] - 2024-08-12
 ### Added
 - SystemD service file
 - Nix flake for development
 ### Changed
 - Switch from yarn to npm
-- Update doipjs to 2.0.0-rc.1
+- Update doipjs to 2.0.0
 ### Fixed
 - Escape URL parameters
 - CI config
 ### Notes
 - This release is a major version release as the package manager has been switched from yarn to npm.
+- Version 2.0.0 of doipjs also switched from yarn to npm, as well as added support for Discord and pronouns.cc claim verification.
 
 ## [4.2.7] - 2024-02-01
 ### Added
