@@ -87,7 +87,7 @@ const doVerification = async (profile) => {
 const validate = (profile) => {
   const valid = apiProfileValidate(profile)
   if (!valid) {
-    throw new Error(`Profile data validation error: ${apiProfileValidate.errors.map(x => x.message).join(', ')}`)
+    throw new Error(`API data validation error: ${apiProfileValidate.errors.map(x => `${x.instancePath} ${x.message}`).join(', ')}`)
   }
 }
 
