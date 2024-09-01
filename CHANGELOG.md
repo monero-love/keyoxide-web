@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.1] - 2024-09-01
+### Changed
+- Update doipjs to 2.0.1
+- Improve API data validation error message
+### Fixed
+- Stop function when API response was already sent, which would cause a program crash
+### Notes
+- In the schema for the profile API response, `/personas/{x}/claims/{y}/matches/{z}/profile/uri` is now a nullable string.
+
 ## [5.0.0] - 2024-08-12
 ### Added
 - SystemD service file
