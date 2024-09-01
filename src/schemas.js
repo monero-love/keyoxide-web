@@ -287,7 +287,7 @@ export const serviceProviderSchema = {
         },
         uri: {
           description: 'URI or URL for public access to the profile',
-          type: 'string'
+          type: ['string', 'null']
         },
         qr: {
           description: 'URI or URL associated with the profile usually served as a QR code',
