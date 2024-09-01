@@ -121,6 +121,7 @@ router.get('/fetch',
 
     if ('errors' in data && data.errors.length > 0) {
       res.status(500).send(data)
+      return
     }
 
     // Do verification
