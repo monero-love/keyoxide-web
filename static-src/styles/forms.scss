@@ -169,7 +169,7 @@ button.inline {
             }
         }
 
-        &:has(input[type="search"]:focus) {
+        &:focus-within {
           outline: 5px auto Highlight;
           outline: 5px auto -webkit-focus-ring-color;
         }
