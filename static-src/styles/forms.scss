@@ -163,6 +163,15 @@ button.inline {
             margin: 0;
             padding: 8px;
             border-radius: 8px 0 0 8px;
+
+            &:focus {
+              outline: none;
+            }
+        }
+
+        &:has(input[type="search"]:focus) {
+          outline: 5px auto Highlight;
+          outline: 5px auto -webkit-focus-ring-color;
         }
 
         input[type="submit"] {
