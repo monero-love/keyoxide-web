@@ -103,7 +103,7 @@ a.button {
     border-radius: 4px;
     cursor: pointer;
 
-    &:hover {
+    &:hover, &:active, &:focus {
         background-color: var(--button-background-color-hover);
         border-color: var(--button-border-color-hover);
         color: var(--button-text-color-hover);

@@ -84,8 +84,9 @@ h4 {
 }
 a {
     color: var(--link-color);
+    transition: 0.2s ease-out;
 
-    &:hover {
+    &:hover, &:active, &:focus {
         color: var(--link-color-hover);
     }
 }
