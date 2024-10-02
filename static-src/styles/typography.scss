@@ -105,40 +105,28 @@ a.button.button--donate {
 a.button.button--donate svg {
     width: 24px;
     height: 24px;
-    fill: var(--text-color);
+    fill: var(--button-text-color);
 }
+
 a.button.button--donate.button--opencollective {
-    color: #fff;
-    background-color: #0c2d66;
+    --button-text-color: #fff;
+    --button-background-color: #0c2d66;
+    --button-text-color-hover: #fff;
+    --button-background-color-hover: #144aa9;
 }
-a.button.button--donate.button--opencollective svg {
-    fill: #fff;
-}
-a.button.button--donate.button--opencollective:hover {
-    color: #fff;
-    background-color: #144aa9;
-}
+
 a.button.button--donate.button--liberapay {
-    color: #333;
-    background-color: #ffee16;
+    --button-text-color: #333;
+    --button-background-color: #ffee16;
+    --button-text-color-hover: #333;
+    --button-background-color-hover: #fff463;
 }
-a.button.button--donate.button--liberapay svg {
-    fill: #333;
-}
-a.button.button--donate.button--liberapay:hover {
-    color: #333;
-    background-color: #fff463;
-}
+
 a.button.button--donate.button--kofi {
-    color: #333;
-    background-color: #1ac0ff;
-}
-a.button.button--donate.button--kofi svg {
-    fill: #333;
-}
-a.button.button--donate.button--kofi:hover {
-    color: #333;
-    background-color: #66d4ff;
+    --button-text-color: #333;
+    --button-background-color: #1ac0ff;
+    --button-text-color-hover: #333;
+    --button-background-color-hover: #66d4ff;
 }
 
 ul {
