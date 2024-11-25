@@ -26,4 +26,4 @@ COPY --from=builder /app/static /app/static
 
 EXPOSE 3000
 
-CMD ["node" "./dist/"]
+CMD ["node", "./dist/"]
