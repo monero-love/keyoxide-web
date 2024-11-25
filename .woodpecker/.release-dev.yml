@@ -1,5 +1,5 @@
 when:
-  branch: dev
+  branch: main
   event: push
 steps:
   publish-dev-container:
