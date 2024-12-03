@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.1.0] - 2024-12-03
 ### Changed
 - Update doipjs to 2.1.0
+- Improve CSS styling - Thanks N4ta
 ### Notes
 - Version 2.1.0 of doipjs added support for SourceHut, Bluesky and pronouns.page claim verification.
 
@@ -44,7 +45,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Notes
 - The version of keyoxide-web that the server is running can now be requested at the `/.well-known/keyoxide/version` HTTP endpoint. It is also found in the footer of every page.
 - Version 1.2.9 of doipjs notably adds support for ORCiD claim verification, as well as a couple of performance improvements.
-
 
 ## [4.2.6] - 2024-01-24
 ### Added
