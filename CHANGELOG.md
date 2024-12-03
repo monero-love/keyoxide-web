@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.1.0] - 2024-12-03
+### Changed
+- Update doipjs to 2.1.0
+### Notes
+- Version 2.1.0 of doipjs added support for SourceHut, Bluesky and pronouns.page claim verification.
+
 ## [5.0.1] - 2024-09-01
 ### Changed
 - Update doipjs to 2.0.1
