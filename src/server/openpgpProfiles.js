@@ -62,8 +62,9 @@ const fetchWKD = (id) => {
         return reject(new Error(`The WKD identifier "${id}" is invalid`))
       }
       const localEncoded = await computeWKDLocalPart(localPart)
-      const urlAdvanced = `https://openpgpkey.${domain}/.well-known/openpgpkey/${domain}/hu/${localEncoded}`
-      const urlDirect = `https://${domain}/.well-known/openpgpkey/hu/${localEncoded}`
+      const localPartEncoded = encodeURIComponent(localPart)
+      const urlAdvanced = `https://openpgpkey.${domain}/.well-known/openpgpkey/${domain}/hu/${localEncoded}?l=${localPartEncoded}`
+      const urlDirect = `https://${domain}/.well-known/openpgpkey/hu/${localEncoded}?l=${localPartEncoded}`
       let plaintext
 
       const hash = createHash('md5').update(id).digest('hex')
