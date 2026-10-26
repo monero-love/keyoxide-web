@@ -77,6 +77,7 @@ app.set('keyoxide_version', packageData.version)
 app.set('git_branch', gitBranch)
 app.set('git_hash', gitHash)
 app.set('onion_url', process.env.ONION_URL)
+app.set('discovery_profile', process.env.DISCOVERY_PROFILE || 'instances@keyoxide.org')
 
 // Middlewares
 app.use(httpContext.middleware)

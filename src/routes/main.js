@@ -36,7 +36,7 @@ const router = express.Router()
 const md = markdownImport({ typographer: true })
 
 router.get('/', (req, res) => {
-  res.render('index', { meta: getMetaFromReq(req) })
+  res.render('index', { discoveryProfile: req.app.get('discovery_profile'), meta: getMetaFromReq(req) })
 })
 
 router.get('/apps', (req, res) => {
