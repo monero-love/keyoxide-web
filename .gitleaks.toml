@@ -7,3 +7,10 @@ regexTarget = "match"
 regexes = ['''keyoxide\.org:WHM3OC7UFRARIVEXDXUV4GVXNQ''']
 paths = ['''views/apps\.pug$''']
 condition = "AND"
+
+[[allowlists]]
+description = "Public SHA-256 digests of secret-scan reports in the rc2 artifact manifest, not credentials"
+regexTarget = "match"
+regexes = ['''source-secrets\.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"''', '''source-secrets\.log": "e42eba1968b40fb067357c8c23e64e759114494cc625942a6256a3654dc93f6f"''']
+paths = ['''docs/releases/rc2-evidence/manifest\.json$''']
+condition = "AND"

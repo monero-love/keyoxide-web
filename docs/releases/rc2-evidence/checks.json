@@ -1,0 +1,42 @@
+[
+  {
+    "step": "release-gate",
+    "exitCode": 0
+  },
+  {
+    "step": "source-secrets",
+    "exitCode": 0
+  },
+  {
+    "step": "build",
+    "exitCode": 0
+  },
+  {
+    "step": "config-scan",
+    "exitCode": 0
+  },
+  {
+    "step": "container-smoke",
+    "exitCode": 0
+  },
+  {
+    "step": "https-rehearsal",
+    "exitCode": 0
+  },
+  {
+    "step": "image-audit",
+    "exitCode": 0
+  },
+  {
+    "step": "image-sbom",
+    "exitCode": 0
+  },
+  {
+    "step": "native-export",
+    "exitCode": 0
+  },
+  {
+    "step": "image-export",
+    "exitCode": 0
+  }
+]

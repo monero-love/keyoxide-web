@@ -1,0 +1,6 @@
+{
+  "releaseRevision": "d3bbd32c44bf60af92f2659950ae455f794eedf4",
+  "imageVulnerabilities": 0,
+  "sourceSecretFindings": 0,
+  "scope": "Candidate image and source only. Existing host OS and retained proof backend are not certified by this audit."
+}

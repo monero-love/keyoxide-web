@@ -1,0 +1,791 @@
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 check:release
+npm notice run npm run license:check && npm test && npm run test:verifier && npm run build && npm run test:browser && npm audit --audit-level=low && npm audit --prefix experiments/simplex-verifier --audit-level=low
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 license:check
+npm notice run node scripts/check-licenses.js
+PASS: AGPL notices on 64 source files and root license present. Generated files and dependencies excluded.
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 pretest
+npm notice run npm run lint
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 lint
+npm notice run npm run standard:check && npm run eslint:check && npm run biome:check
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 standard:check
+npm notice run standard ./src
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 eslint:check
+npm notice run npx eslint ./src/**
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 npx
+npm notice run 'eslint' ./src/api ./src/index.js ./src/log.js ./src/routes ./src/schemas.js ./src/server ./src/shared
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 biome:check
+npm notice run npx @biomejs/biome check ./src
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 npx
+npm notice run 'biome' check ./src
+Checked 19 files in 14ms. No fixes applied.
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 test
+npm notice run node --test --test-concurrency=1 test/*.test.js
+TAP version 13
+# Subtest: browser
+    # Subtest: utils
+        # Subtest: computeWKDLocalPart()
+            # Subtest: should handle "test"
+            ok 1 - should handle "test"
+              ---
+              duration_ms: 5.767038
+              type: 'test'
+              ...
+            # Subtest: should handle "zaphod"
+            ok 2 - should handle "zaphod"
+              ---
+              duration_ms: 0.833887
+              type: 'test'
+              ...
+            1..2
+        ok 1 - computeWKDLocalPart()
+          ---
+          duration_ms: 7.260937
+          type: 'suite'
+          ...
+        # Subtest: encodeZBase32()
+            # Subtest: should handle a Uint8Array
+            ok 1 - should handle a Uint8Array
+              ---
+              duration_ms: 0.272088
+              type: 'test'
+              ...
+            1..1
+        ok 2 - encodeZBase32()
+          ---
+          duration_ms: 0.3802
+          type: 'suite'
+          ...
+        # Subtest: generateArgon2Hash()
+            # Subtest: should generate an Argon2 hash
+            ok 1 - should generate an Argon2 hash
+              ---
+              duration_ms: 49.528161
+              type: 'test'
+              ...
+            1..1
+        ok 3 - generateArgon2Hash()
+          ---
+          duration_ms: 49.740478
+          type: 'suite'
+          ...
+        # Subtest: verifyArgon2Hash()
+            # Subtest: should verify a valid Argon2 hash
+            ok 1 - should verify a valid Argon2 hash
+              ---
+              duration_ms: 35.676649
+              type: 'test'
+              ...
+            # Subtest: should reject an invalid Argon2 hash
+            ok 2 - should reject an invalid Argon2 hash
+              ---
+              duration_ms: 34.37512
+              type: 'test'
+              ...
+            1..2
+        ok 4 - verifyArgon2Hash()
+          ---
+          duration_ms: 70.369633
+          type: 'suite'
+          ...
+        # Subtest: generateBcryptHash()
+            # Subtest: should generate a bcrypt hash
+            ok 1 - should generate a bcrypt hash
+              ---
+              duration_ms: 141.778525
+              type: 'test'
+              ...
+            1..1
+        ok 5 - generateBcryptHash()
+          ---
+          duration_ms: 142.109763
+          type: 'suite'
+          ...
+        # Subtest: verifyBcryptHash()
+            # Subtest: should verify a valid bcrypt hash
+            ok 1 - should verify a valid bcrypt hash
+              ---
+              duration_ms: 120.141709
+              type: 'test'
+              ...
+            # Subtest: should reject an invalid bcrypt hash
+            ok 2 - should reject an invalid bcrypt hash
+              ---
+              duration_ms: 113.81158
+              type: 'test'
+              ...
+            1..2
+        ok 6 - verifyBcryptHash()
+          ---
+          duration_ms: 234.319833
+          type: 'suite'
+          ...
+        # Subtest: generateProfileURL()
+            # Subtest: should handle a https WKD URL
+            ok 1 - should handle a https WKD URL
+              ---
+              duration_ms: 0.613174
+              type: 'test'
+              ...
+            # Subtest: should handle a http WKD URL
+            ok 2 - should handle a http WKD URL
+              ---
+              duration_ms: 0.226503
+              type: 'test'
+              ...
+            # Subtest: should handle a https HKP+email URL
+            ok 3 - should handle a https HKP+email URL
+              ---
+              duration_ms: 0.214861
+              type: 'test'
+              ...
+            # Subtest: should handle a http HKP+email URL
+            ok 4 - should handle a http HKP+email URL
+              ---
+              duration_ms: 0.24116
+              type: 'test'
+              ...
+            # Subtest: should handle a https HKP+fingerprint URL
+            ok 5 - should handle a https HKP+fingerprint URL
+              ---
+              duration_ms: 0.17669
+              type: 'test'
+              ...
+            # Subtest: should handle a http HKP+fingerprint URL
+            ok 6 - should handle a http HKP+fingerprint URL
+              ---
+              duration_ms: 0.336768
+              type: 'test'
+              ...
+            # Subtest: should handle a https keybase URL
+            ok 7 - should handle a https keybase URL
+              ---
+              duration_ms: 0.207057
+              type: 'test'
+              ...
+            # Subtest: should handle a http keybase URL
+            ok 8 - should handle a http keybase URL
+              ---
+              duration_ms: 0.167844
+              type: 'test'
+              ...
+            1..8
+        ok 7 - generateProfileURL()
+          ---
+          duration_ms: 2.480511
+          type: 'suite'
+          ...
+        1..7
+    ok 1 - utils
+      ---
+      duration_ms: 507.280019
+      type: 'suite'
+      ...
+    1..1
+ok 1 - browser
+  ---
+  duration_ms: 507.642576
+  type: 'suite'
+  ...
+# Subtest: proxy trust is explicit, exact and handles IPv4-mapped socket addresses
+ok 2 - proxy trust is explicit, exact and handles IPv4-mapped socket addresses
+  ---
+  duration_ms: 10.399215
+  type: 'test'
+  ...
+# Subtest: trusted proxy separates client quotas, blocks spoofed chains and leaves health available
+ok 3 - trusted proxy separates client quotas, blocks spoofed chains and leaves health available
+  ---
+  duration_ms: 69.330802
+  type: 'test'
+  ...
+# Subtest: deployment refuses malformed or unbounded request quotas
+ok 4 - deployment refuses malformed or unbounded request quotas
+  ---
+  duration_ms: 1.18867
+  type: 'test'
+  ...
+# Subtest: untrusted peers cannot use forwarding headers to obtain new rate-limit buckets
+ok 5 - untrusted peers cannot use forwarding headers to obtain new rate-limit buckets
+  ---
+  duration_ms: 15.369135
+  type: 'test'
+  ...
+# Subtest: public key retrieval accepts valid signed claims and strips tampered certifications
+ok 6 - public key retrieval accepts valid signed claims and strips tampered certifications
+  ---
+  duration_ms: 453.88595
+  type: 'test'
+  ...
+# Subtest: WKD fallback and source URL use the bounded public fetcher
+ok 7 - WKD fallback and source URL use the bounded public fetcher
+  ---
+  duration_ms: 85.151871
+  type: 'test'
+  ...
+# Subtest: ASP signed profile verifies through bounded retrieval and preserves fetch metadata
+ok 8 - ASP signed profile verifies through bounded retrieval and preserves fetch metadata
+  ---
+  duration_ms: 62.95528
+  type: 'test'
+  ...
+# Subtest: restricted HTTP proxy preserves text/JSON and rejects unsafe destinations and SimpleX claims
+ok 9 - restricted HTTP proxy preserves text/JSON and rejects unsafe destinations and SimpleX claims
+  ---
+  duration_ms: 60.463657
+  type: 'test'
+  ...
+# Subtest: DNS proxy uses only fixed public recursors and keeps TXT chunk structure
+ok 10 - DNS proxy uses only fixed public recursors and keeps TXT chunk structure
+  ---
+  duration_ms: 21.809679
+  type: 'test'
+  ...
+# Subtest: proof proxy bounds concurrent upstream work
+ok 11 - proof proxy bounds concurrent upstream work
+  ---
+  duration_ms: 25.786844
+  type: 'test'
+  ...
+# Subtest: SSRF: rejects private, loopback, mapped, link-local, multicast and reserved IPs
+ok 12 - SSRF: rejects private, loopback, mapped, link-local, multicast and reserved IPs
+  ---
+  duration_ms: 2.51225
+  type: 'test'
+  ...
+# Subtest: SSRF: rejects protocol, credential, port and numeric-host bypasses before fetch
+ok 13 - SSRF: rejects protocol, credential, port and numeric-host bypasses before fetch
+  ---
+  duration_ms: 5.392578
+  type: 'test'
+  ...
+# Subtest: SSRF: rejects mixed public/private DNS answers and pins approved answers
+ok 14 - SSRF: rejects mixed public/private DNS answers and pins approved answers
+  ---
+  duration_ms: 7.834126
+  type: 'test'
+  ...
+# Subtest: XSS: untrusted link text cannot become HTML or executable URL
+ok 15 - XSS: untrusted link text cannot become HTML or executable URL
+  ---
+  duration_ms: 49.815036
+  type: 'test'
+  ...
+# Subtest: SSRF: redirected private destination is rejected before another socket is opened
+ok 16 - SSRF: redirected private destination is rejected before another socket is opened
+  ---
+  duration_ms: 2.773819
+  type: 'test'
+  ...
+# Subtest: SSRF: oversized response is aborted, not buffered without limit
+ok 17 - SSRF: oversized response is aborted, not buffered without limit
+  ---
+  duration_ms: 3.882178
+  type: 'test'
+  ...
+# Subtest: server
+    # Subtest: utils
+        # Subtest: computeWKDLocalPart()
+            # Subtest: should handle "test"
+            ok 1 - should handle "test"
+              ---
+              duration_ms: 6.925871
+              type: 'test'
+              ...
+            # Subtest: should handle "zaphod"
+            ok 2 - should handle "zaphod"
+              ---
+              duration_ms: 1.349269
+              type: 'test'
+              ...
+            1..2
+        ok 1 - computeWKDLocalPart()
+          ---
+          duration_ms: 9.228681
+          type: 'suite'
+          ...
+        # Subtest: encodeZBase32()
+            # Subtest: should handle a Uint8Array
+            ok 1 - should handle a Uint8Array
+              ---
+              duration_ms: 0.204652
+              type: 'test'
+              ...
+            1..1
+        ok 2 - encodeZBase32()
+          ---
+          duration_ms: 0.309638
+          type: 'suite'
+          ...
+        1..2
+    ok 1 - utils
+      ---
+      duration_ms: 10.033884
+      type: 'suite'
+      ...
+    # Subtest: index
+        # Subtest: generateHKPProfile()
+            # Subtest: should handle implicit scheme for keyoxide URL
+            ok 1 - should handle implicit scheme for keyoxide URL
+              ---
+              duration_ms: 71.027932
+              type: 'test'
+              ...
+            # Subtest: should handle explicit http scheme for keyoxide URL
+            ok 2 - should handle explicit http scheme for keyoxide URL
+              ---
+              duration_ms: 7.977635
+              type: 'test'
+              ...
+            # Subtest: should handle explicit https scheme for keyoxide URL
+            ok 3 - should handle explicit https scheme for keyoxide URL
+              ---
+              duration_ms: 6.410358
+              type: 'test'
+              ...
+            1..3
+        ok 1 - generateHKPProfile()
+          ---
+          duration_ms: 86.019171
+          type: 'suite'
+          ...
+        1..1
+    ok 2 - index
+      ---
+      duration_ms: 86.220837
+      type: 'suite'
+      ...
+    1..2
+ok 18 - server
+  ---
+  duration_ms: 97.056057
+  type: 'suite'
+  ...
+# Subtest: SimpleX explicit verification boundary
+    # Subtest: preserves exact bytes without generic provider matches
+    ok 1 - preserves exact bytes without generic provider matches
+      ---
+      duration_ms: 1.723798
+      type: 'test'
+      ...
+    # Subtest: reserves unsupported SimpleX links without confusing unrelated domains
+    ok 2 - reserves unsupported SimpleX links without confusing unrelated domains
+      ---
+      duration_ms: 0.185826
+      type: 'test'
+      ...
+    # Subtest: does not fetch SimpleX proofs, but still verifies ordinary claims
+    ok 3 - does not fetch SimpleX proofs, but still verifies ordinary claims
+      ---
+      duration_ms: 0.306983
+      type: 'test'
+      ...
+    # Subtest: removes imported verification success for SimpleX
+    ok 4 - removes imported verification success for SimpleX
+      ---
+      duration_ms: 0.174916
+      type: 'test'
+      ...
+    # Subtest: propagates ordinary verification failures instead of hanging
+    ok 5 - propagates ordinary verification failures instead of hanging
+      ---
+      duration_ms: 0.465369
+      type: 'test'
+      ...
+    # Subtest: rendered browser handoff
+        # Subtest: renders unmatched scheme claims server-side with no spinner or success
+        ok 1 - renders unmatched scheme claims server-side with no spinner or success
+          ---
+          duration_ms: 180.706265
+          type: 'test'
+          ...
+        # Subtest: page initialization never calls the SimpleX verifier
+        ok 2 - page initialization never calls the SimpleX verifier
+          ---
+          duration_ms: 101.880714
+          type: 'test'
+          ...
+        # Subtest: direct verify calls still cannot invoke doipjs for SimpleX
+        ok 3 - direct verify calls still cannot invoke doipjs for SimpleX
+          ---
+          duration_ms: 79.520748
+          type: 'test'
+          ...
+        # Subtest: requires explicit consent and exports exact bytes and matching public key
+        ok 4 - requires explicit consent and exports exact bytes and matching public key
+          ---
+          duration_ms: 83.837488
+          type: 'test'
+          ...
+        # Subtest: does not offer downloads for invitations, short links or non-OpenPGP keys
+        ok 5 - does not offer downloads for invitations, short links or non-OpenPGP keys
+          ---
+          duration_ms: 234.180362
+          type: 'test'
+          ...
+        # Subtest: treats address and embedded public-key HTML as text
+        ok 6 - treats address and embedded public-key HTML as text
+          ---
+          duration_ms: 71.086931
+          type: 'test'
+          ...
+        1..6
+    ok 6 - rendered browser handoff
+      ---
+      duration_ms: 810.43049
+      type: 'suite'
+      ...
+    # Subtest: HTTP API
+        # Subtest: fetch with doVerification=true leaves SimpleX unchecked
+        ok 1 - fetch with doVerification=true leaves SimpleX unchecked
+          ---
+          duration_ms: 32.975967
+          type: 'test'
+          ...
+        # Subtest: verify clears claimed success without fetching a SimpleX proof
+        ok 2 - verify clears claimed success without fetching a SimpleX proof
+          ---
+          duration_ms: 4.76171
+          type: 'test'
+          ...
+        # Subtest: rejects malformed imported profiles
+        ok 3 - rejects malformed imported profiles
+          ---
+          duration_ms: 9.345708
+          type: 'test'
+          ...
+        1..3
+    ok 7 - HTTP API
+      ---
+      duration_ms: 269.48651
+      type: 'suite'
+      ...
+    1..7
+ok 19 - SimpleX explicit verification boundary
+  ---
+  duration_ms: 1083.871894
+  type: 'suite'
+  ...
+# Subtest: lightweight homepage preserves search and only explicitly enabled analytics
+ok 20 - lightweight homepage preserves search and only explicitly enabled analytics
+  ---
+  duration_ms: 131.218228
+  type: 'test'
+  ...
+# Subtest: preserved analytics mask profile identifiers and honor privacy opt-outs
+ok 21 - preserved analytics mask profile identifiers and honor privacy opt-outs
+  ---
+  duration_ms: 3.709166
+  type: 'test'
+  ...
+1..21
+# tests 55
+# suites 18
+# pass 55
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5689.815552
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 test:verifier
+npm notice run npm test --prefix experiments/simplex-verifier
+npm notice run @monero-love/simplex-address-verifier@0.1.0-rc.1 test
+npm notice run node --test test/*.test.js
+TAP version 13
+# Subtest: downloaded envelope is revalidated against the actual signed claim
+ok 1 - downloaded envelope is revalidated against the actual signed claim
+  ---
+  duration_ms: 103.781073
+  type: 'test'
+  ...
+# Subtest: request rejects unsupported version, private key, invitation and mismatched profile
+ok 2 - request rejects unsupported version, private key, invitation and mismatched profile
+  ---
+  duration_ms: 0.312404
+  type: 'test'
+  ...
+# Subtest: state rejects shared directories, symlinks, and permissive record files
+ok 3 - state rejects shared directories, symlinks, and permissive record files
+  ---
+  duration_ms: 2.729717
+  type: 'test'
+  ...
+# Subtest: consuming a challenge deletes sensitive state and prevents restart replay
+ok 4 - consuming a challenge deletes sensitive state and prevents restart replay
+  ---
+  duration_ms: 0.518248
+  type: 'test'
+  ...
+# Subtest: tampered persisted challenge text fails closed and is consumed
+ok 5 - tampered persisted challenge text fails closed and is consumed
+  ---
+  duration_ms: 106.033748
+  type: 'test'
+  ...
+# Subtest: WebSocket API rejects nonliteral loopback, credentials, query and path overrides
+ok 6 - WebSocket API rejects nonliteral loopback, credentials, query and path overrides
+  ---
+  duration_ms: 0.47679
+  type: 'test'
+  ...
+# Subtest: malformed command response fails without crashing and disconnect cancels pending work
+ok 7 - malformed command response fails without crashing and disconnect cancels pending work
+  ---
+  duration_ms: 17.482881
+  type: 'test'
+  ...
+# Subtest: unsolicited event retention is bounded by count and bytes
+ok 8 - unsolicited event retention is bounded by count and bytes
+  ---
+  duration_ms: 47.256369
+  type: 'test'
+  ...
+# Subtest: CLI input rejects symlinks, oversized files and invalid UTF-8
+ok 9 - CLI input rejects symlinks, oversized files and invalid UTF-8
+  ---
+  duration_ms: 1.766949
+  type: 'test'
+  ...
+# Subtest: adapter connects exact link and binds pending connection to direct contact
+ok 10 - adapter connects exact link and binds pending connection to direct contact
+  ---
+  duration_ms: 1.305808
+  type: 'test'
+  ...
+# Subtest: engine-classified invitations and groups rejected before connect
+ok 11 - engine-classified invitations and groups rejected before connect
+  ---
+  duration_ms: 0.462273
+  type: 'test'
+  ...
+# Subtest: known contacts and reconnect plans rejected
+ok 12 - known contacts and reconnect plans rejected
+  ---
+  duration_ms: 0.404284
+  type: 'test'
+  ...
+# Subtest: sent confirmation, group connection, unrelated contactConnected rejected
+ok 13 - sent confirmation, group connection, unrelated contactConnected rejected
+  ---
+  duration_ms: 0.367487
+  type: 'test'
+  ...
+# Subtest: receive ignores outgoing, group and other-contact messages
+ok 14 - receive ignores outgoing, group and other-contact messages
+  ---
+  duration_ms: 0.479475
+  type: 'test'
+  ...
+# Subtest: valid UID notation and valid signing subkey succeed
+ok 15 - valid UID notation and valid signing subkey succeed
+  ---
+  duration_ms: 37.677706
+  type: 'test'
+  ...
+# Subtest: wrong signing key rejected
+ok 16 - wrong signing key rejected
+  ---
+  duration_ms: 13.221956
+  type: 'test'
+  ...
+# Subtest: wrong primary fingerprint rejected before contacting
+ok 17 - wrong primary fingerprint rejected before contacting
+  ---
+  duration_ms: 1.139407
+  type: 'test'
+  ...
+# Subtest: changed address rejected before contacting
+ok 18 - changed address rejected before contacting
+  ---
+  duration_ms: 5.395744
+  type: 'test'
+  ...
+# Subtest: signature over changed address rejected
+ok 19 - signature over changed address rejected
+  ---
+  duration_ms: 12.211369
+  type: 'test'
+  ...
+# Subtest: expiry enforced
+ok 20 - expiry enforced
+  ---
+  duration_ms: 4.869401
+  type: 'test'
+  ...
+# Subtest: one-time use survives a new verifier instance
+ok 21 - one-time use survives a new verifier instance
+  ---
+  duration_ms: 11.99742
+  type: 'test'
+  ...
+# Subtest: concurrent replay only succeeds once
+ok 22 - concurrent replay only succeeds once
+  ---
+  duration_ms: 10.175928
+  type: 'test'
+  ...
+# Subtest: no response is not verification
+ok 23 - no response is not verification
+  ---
+  duration_ms: 1.928661
+  type: 'test'
+  ...
+# Subtest: other chat, group, or other local user rejected
+ok 24 - other chat, group, or other local user rejected
+  ---
+  duration_ms: 30.55117
+  type: 'test'
+  ...
+# Subtest: copied address is not a signature
+ok 25 - copied address is not a signature
+  ---
+  duration_ms: 3.558794
+  type: 'test'
+  ...
+# Subtest: verifier identity and nonce are signature-bound
+ok 26 - verifier identity and nonce are signature-bound
+  ---
+  duration_ms: 10.812748
+  type: 'test'
+  ...
+# Subtest: invitation links, names, whitespace rejected
+ok 27 - invitation links, names, whitespace rejected
+  ---
+  duration_ms: 0.212066
+  type: 'test'
+  ...
+# Subtest: tampered self-certification does not establish a claim
+ok 28 - tampered self-certification does not establish a claim
+  ---
+  duration_ms: 4.210341
+  type: 'test'
+  ...
+# Subtest: doipjs URI dependency preserves HTTPS and simplex full link bytes
+ok 29 - doipjs URI dependency preserves HTTPS and simplex full link bytes
+  ---
+  duration_ms: 0.5944
+  type: 'test'
+  ...
+# Subtest: revoked primary key rejected before connecting
+ok 30 - revoked primary key rejected before connecting
+  ---
+  duration_ms: 2.821277
+  type: 'test'
+  ...
+# Subtest: expired profile key rejected before connecting
+ok 31 - expired profile key rejected before connecting
+  ---
+  duration_ms: 1.117186
+  type: 'test'
+  ...
+# Subtest: broken subkey binding cannot validate a response
+ok 32 - broken subkey binding cannot validate a response
+  ---
+  duration_ms: 6.168026
+  type: 'test'
+  ...
+# Subtest: failed send invalidates its challenge
+ok 33 - failed send invalidates its challenge
+  ---
+  duration_ms: 1.778571
+  type: 'test'
+  ...
+# Subtest: receive transport failure invalidates its challenge
+ok 34 - receive transport failure invalidates its challenge
+  ---
+  duration_ms: 2.694621
+  type: 'test'
+  ...
+# Subtest: manual GnuPG detached signature interoperates
+ok 35 - manual GnuPG detached signature interoperates
+  ---
+  duration_ms: 19.74254
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 482.094045
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 build
+npm notice run npm run build:server && npm run build:static
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 build:server
+npm notice run ncc build ./src/index.js -o dist
+ncc: Version 0.34.0
+ncc: Compiling file index.js into ESM
+   0kB  dist/package.json
+8196kB  dist/index.js
+8196kB  [9247ms] - ncc 0.34.0
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 build:static
+npm notice run webpack --config webpack.config.js --env static=true --env mode=production
+assets by path ../static/img/ 197 KiB
+  assets by path ../static/img/*.svg 13 KiB 14 assets
+  assets by path ../static/img/*.jpg 173 KiB 4 assets
+  assets by path ../static/img/*.png 11.2 KiB 2 assets
+assets by path ../static/*.js 385 KiB
+  asset ../static/openpgp.js 385 KiB [emitted] [from: node_modules/openpgp/dist/openpgp.js] [copied] [minimized] [big] 1 related asset
+  asset ../static/analytics.js 548 bytes [emitted] [from: static-src/files/analytics.js] [copied] [minimized]
+  asset ../static/search.js 214 bytes [emitted] [from: static-src/files/search.js] [copied] [minimized]
+assets by status 291 KiB [compared for emit]
+  asset main.js 275 KiB [compared for emit] [minimized] [big] (name: main) 1 related asset
+  asset main.css 15.4 KiB [compared for emit] [minimized] (name: main)
+  asset 766.js 134 bytes [compared for emit] [minimized]
+asset ../static/favicon.svg 2.78 KiB [emitted] [from: static-src/files/favicon.svg] [copied]
+asset ../static/robots.txt 35 bytes [emitted] [from: static-src/files/robots.txt] [copied]
+Entrypoint main [big] 291 KiB = main.css 15.4 KiB main.js 275 KiB
+orphan modules 864 KiB (javascript) 1.67 KiB (runtime) [orphan] 186 modules
+runtime modules 8.65 KiB 15 modules
+built modules 899 KiB (javascript) 15.7 KiB (css/mini-extract) [built]
+  modules by path ./node_modules/qrcode/lib/ 70.9 KiB 27 modules
+  modules by path ./static-src/ 816 KiB (javascript) 15.7 KiB (css/mini-extract)
+    ./static-src/index.js + 157 modules 816 KiB [not cacheable] [built] [code generated]
+    css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./static-src/styles.scss 11.4 KiB [built] [code generated]
+    css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./static-src/kx-styles.scss 4.28 KiB [built] [code generated]
+  modules by path ./node_modules/validator/lib/ 1.63 KiB
+    ./node_modules/validator/lib/util/merge.js 868 bytes [built] [code generated]
+    ./node_modules/validator/lib/util/checkHost.js 500 bytes [built] [code generated]
+    ./node_modules/validator/lib/util/includesString.js 306 bytes [built] [code generated]
+  + 6 modules
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  main.js (275 KiB)
+  ../static/openpgp.js (385 KiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  main (291 KiB)
+      main.css
+      main.js
+
+WARNING in webpack performance recommendations: 
+The runtime is part of the initial chunk of main. It describes every other chunk, so a change anywhere in the build rewrites these assets and clients download them again.
+Set 'optimization.runtimeChunk' to emit the runtime as its own chunk.
+For more info visit https://webpack.js.org/configuration/optimization/#optimizationruntimechunk
+
+webpack 5.113.0 compiled with 3 warnings in 5522 ms
+npm notice run keyoxide-web@5.1.0-simplex.1-rc.2 test:browser
+npm notice run playwright test
+[WebServer] (node:1443220) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 6 tests using 1 worker
+
+(node:1443350) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium-desktop] › test/e2e/simplex.spec.js:7:1 › built browser assets preserve opt-in, exact signed claim and no network verification (507ms)
+  ✓  2 [chromium-desktop] › test/e2e/simplex.spec.js:37:2 › ordinary github proof succeeds through the production browser bundle (251ms)
+  ✓  3 [chromium-desktop] › test/e2e/simplex.spec.js:37:2 › ordinary dns proof succeeds through the production browser bundle (244ms)
+(node:1443489) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 [chromium-mobile] › test/e2e/simplex.spec.js:7:1 › built browser assets preserve opt-in, exact signed claim and no network verification (504ms)
+  ✓  5 [chromium-mobile] › test/e2e/simplex.spec.js:37:2 › ordinary github proof succeeds through the production browser bundle (312ms)
+  ✓  6 [chromium-mobile] › test/e2e/simplex.spec.js:37:2 › ordinary dns proof succeeds through the production browser bundle (238ms)
+
+  6 passed (4.6s)
+found 0 vulnerabilities
+found 0 vulnerabilities

@@ -1,0 +1,8 @@
+PASS /healthz 200
+PASS / 200
+PASS /util 200
+PASS /source.tar.gz 200
+PASS disabled legacy API /api/3/profile/verify 403
+PASS disabled legacy API /api/3/profile/fetch?query=foo&doVerification=true 403
+PASS non-root, pinned Node, read-only filesystem
+PASS graceful shutdown
