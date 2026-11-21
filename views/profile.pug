@@ -44,6 +44,8 @@ mixin generatePersona(persona, isPrimary)
                 div
                   if simplex
                     p This SimpleX link has not been checked. A reusable contact address needs an explicit local check.
+                    p
+                      a(href="/simplex") How to add and check a SimpleX address
                     code= claim.uri
                   else
                     p Claim link:

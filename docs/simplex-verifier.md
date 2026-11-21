@@ -1,6 +1,6 @@
 # SimpleX local verification integration
 
-This development branch renders SimpleX identity claims, suppresses automatic proof requests for them, and offers an explicit local verification handoff. Nothing is deployed, and no public badge or verifier service is created.
+This development branch renders SimpleX identity claims, suppresses automatic proof requests for them, and offers an explicit local verification handoff. The profile handoff is deployed on keyoxide.net. Read the [on-site guide](https://keyoxide.net/simplex). No public badge or hosted verifier service is created.
 
 ## Use the handoff
 

@@ -1,6 +1,6 @@
 # SimpleX ↔ Keyoxide local verifier
 
-Standalone OpenPGP challenge verifier, release candidate 0.1.0-rc.1. Private work branch in the private Keyoxide import. No public badge, deployed bot, upstream PR, or page-load checks. The development site now offers an explicit local-request handoff. See the [integration guide](../../docs/simplex-verifier.md).
+Standalone OpenPGP challenge verifier, release candidate 0.1.0-rc.1. Available on the monero-love Keyoxide branch. No public badge, deployed bot, upstream PR, or page-load checks. The live site now offers an explicit local-request handoff. See the [integration guide](../../docs/simplex-verifier.md).
 
 Requires Node.js 22.23.5+ (supported major versions 22–26) and GnuPG. Tested with Node 26.13.1, GnuPG 2.4.9 and SimpleX CLI 7.1.4. Run from `experiments/simplex-verifier`:
 
@@ -69,6 +69,6 @@ See [upstream findings and minimal integration](RESEARCH.md), [pinned commits an
 - [Keyoxide verifier branch](https://github.com/monero-love/keyoxide-web/tree/work/simplex-address-verifier/experiments/simplex-verifier)
 - [SimpleX interoperability branch](https://github.com/monero-love/simplex-chat/tree/work/keyoxide-address-verifier/bots/keyoxide-verifier.md)
 
-These are private GitHub imports under `monero-love`, with upstream history preserved and upstream remotes documented. The implementation is published as a single reviewed downstream changeset. Importing does not create native GitHub fork metadata. The original `main` and `stable` branches are unchanged. No live testing runs on checkout or page load.
+These are GitHub imports under `monero-love`, with upstream history preserved and upstream remotes documented. The implementation is published as a single reviewed downstream changeset. Importing does not create native GitHub fork metadata. The original `main` and `stable` branches are unchanged. No live testing runs on checkout or page load.
 
 The optional upstream parsing test needs the pinned doipjs checkout and its dependencies. Run `node scripts/prepare-upstream.js` explicitly to fetch them, then `npm run test:upstream`. For the optional live test, place the CLI from `upstream-lock.json` at `.local-bin/simplex-chat` after checking its SHA-256. The upstream binary and source checkouts are not committed.

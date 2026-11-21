@@ -43,6 +43,11 @@ router.get('/apps', (req, res) => {
   res.render('apps', { title: 'Apps', meta: getMetaFromReq(req) })
 })
 
+router.get('/simplex', (req, res) => {
+  const content = md.render(readFileSync('./content/simplex.md', 'utf8'))
+  res.render('article', { title: 'SimpleX address checks', content, meta: getMetaFromReq(req) })
+})
+
 router.get('/privacy', (req, res) => {
   const rawContent = readFileSync('./content/privacy-policy.md', 'utf8')
   const content = md.render(rawContent)
