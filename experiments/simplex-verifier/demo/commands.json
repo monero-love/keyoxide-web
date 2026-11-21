@@ -1,0 +1,35 @@
+{
+  "demo-output.txt": {
+    "command": [
+      "node",
+      "experiments/simplex-verifier/demo.js"
+    ],
+    "exitCode": 0
+  },
+  "verifier-tests.tap": {
+    "command": [
+      "node",
+      "--test",
+      "experiments/simplex-verifier/test/request.test.js",
+      "experiments/simplex-verifier/test/security.test.js",
+      "experiments/simplex-verifier/test/transport.test.js",
+      "experiments/simplex-verifier/test/verifier.test.js"
+    ],
+    "exitCode": 0
+  },
+  "keyoxide-tests.txt": {
+    "command": [
+      "npm",
+      "test"
+    ],
+    "exitCode": 0
+  },
+  "browser-tests.txt": {
+    "command": [
+      "npm",
+      "run",
+      "test:browser"
+    ],
+    "exitCode": 0
+  }
+}

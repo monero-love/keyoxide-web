@@ -1,6 +1,6 @@
 # keyoxide-web
 
-This private branch contains the SimpleX local-verifier release candidate. Start with the [integration guide](docs/simplex-verifier.md) and [release audit](docs/releases/simplex-rc1.md). The upstream hosting instructions below do not deploy this branch. No public verifier or badge is included.
+This private branch contains the SimpleX local-verifier release candidate. Start with the [integration guide](docs/simplex-verifier.md) and [release audit](docs/releases/simplex-rc1.md). See the [demo and captured test output](experiments/simplex-verifier/demo/README.md) for a runnable example and 82 passing tests. The upstream hosting instructions below do not deploy this branch. No public verifier or badge is included.
 
 [![status-badge](https://ci.codeberg.org/api/badges/5919/status.svg)](https://ci.codeberg.org/repos/5919)
 [![License](https://img.shields.io/badge/license-AGPL--v3-blue?style=flat)](https://codeberg.org/keyoxide/keyoxide-web/src/branch/main/LICENSE)

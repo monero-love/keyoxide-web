@@ -1,0 +1,220 @@
+TAP version 13
+# Subtest: downloaded envelope is revalidated against the actual signed claim
+ok 1 - downloaded envelope is revalidated against the actual signed claim
+  ---
+  duration_ms: 86.378824
+  type: 'test'
+  ...
+# Subtest: request rejects unsupported version, private key, invitation and mismatched profile
+ok 2 - request rejects unsupported version, private key, invitation and mismatched profile
+  ---
+  duration_ms: 0.392353
+  type: 'test'
+  ...
+# Subtest: state rejects shared directories, symlinks, and permissive record files
+ok 3 - state rejects shared directories, symlinks, and permissive record files
+  ---
+  duration_ms: 2.025774
+  type: 'test'
+  ...
+# Subtest: consuming a challenge deletes sensitive state and prevents restart replay
+ok 4 - consuming a challenge deletes sensitive state and prevents restart replay
+  ---
+  duration_ms: 0.634626
+  type: 'test'
+  ...
+# Subtest: tampered persisted challenge text fails closed and is consumed
+ok 5 - tampered persisted challenge text fails closed and is consumed
+  ---
+  duration_ms: 87.150966
+  type: 'test'
+  ...
+# Subtest: WebSocket API rejects nonliteral loopback, credentials, query and path overrides
+ok 6 - WebSocket API rejects nonliteral loopback, credentials, query and path overrides
+  ---
+  duration_ms: 0.496667
+  type: 'test'
+  ...
+# Subtest: malformed command response fails without crashing and disconnect cancels pending work
+ok 7 - malformed command response fails without crashing and disconnect cancels pending work
+  ---
+  duration_ms: 17.732105
+  type: 'test'
+  ...
+# Subtest: unsolicited event retention is bounded by count and bytes
+ok 8 - unsolicited event retention is bounded by count and bytes
+  ---
+  duration_ms: 41.968982
+  type: 'test'
+  ...
+# Subtest: CLI input rejects symlinks, oversized files and invalid UTF-8
+ok 9 - CLI input rejects symlinks, oversized files and invalid UTF-8
+  ---
+  duration_ms: 1.542932
+  type: 'test'
+  ...
+# Subtest: adapter connects exact link and binds pending connection to direct contact
+ok 10 - adapter connects exact link and binds pending connection to direct contact
+  ---
+  duration_ms: 0.99058
+  type: 'test'
+  ...
+# Subtest: engine-classified invitations and groups rejected before connect
+ok 11 - engine-classified invitations and groups rejected before connect
+  ---
+  duration_ms: 0.449389
+  type: 'test'
+  ...
+# Subtest: known contacts and reconnect plans rejected
+ok 12 - known contacts and reconnect plans rejected
+  ---
+  duration_ms: 0.329987
+  type: 'test'
+  ...
+# Subtest: sent confirmation, group connection, unrelated contactConnected rejected
+ok 13 - sent confirmation, group connection, unrelated contactConnected rejected
+  ---
+  duration_ms: 0.320849
+  type: 'test'
+  ...
+# Subtest: receive ignores outgoing, group and other-contact messages
+ok 14 - receive ignores outgoing, group and other-contact messages
+  ---
+  duration_ms: 0.447105
+  type: 'test'
+  ...
+# Subtest: valid UID notation and valid signing subkey succeed
+ok 15 - valid UID notation and valid signing subkey succeed
+  ---
+  duration_ms: 37.329766
+  type: 'test'
+  ...
+# Subtest: wrong signing key rejected
+ok 16 - wrong signing key rejected
+  ---
+  duration_ms: 11.090247
+  type: 'test'
+  ...
+# Subtest: wrong primary fingerprint rejected before contacting
+ok 17 - wrong primary fingerprint rejected before contacting
+  ---
+  duration_ms: 0.950596
+  type: 'test'
+  ...
+# Subtest: changed address rejected before contacting
+ok 18 - changed address rejected before contacting
+  ---
+  duration_ms: 1.900441
+  type: 'test'
+  ...
+# Subtest: signature over changed address rejected
+ok 19 - signature over changed address rejected
+  ---
+  duration_ms: 8.892272
+  type: 'test'
+  ...
+# Subtest: expiry enforced
+ok 20 - expiry enforced
+  ---
+  duration_ms: 3.74206
+  type: 'test'
+  ...
+# Subtest: one-time use survives a new verifier instance
+ok 21 - one-time use survives a new verifier instance
+  ---
+  duration_ms: 10.996002
+  type: 'test'
+  ...
+# Subtest: concurrent replay only succeeds once
+ok 22 - concurrent replay only succeeds once
+  ---
+  duration_ms: 7.147813
+  type: 'test'
+  ...
+# Subtest: no response is not verification
+ok 23 - no response is not verification
+  ---
+  duration_ms: 2.019041
+  type: 'test'
+  ...
+# Subtest: other chat, group, or other local user rejected
+ok 24 - other chat, group, or other local user rejected
+  ---
+  duration_ms: 31.763347
+  type: 'test'
+  ...
+# Subtest: copied address is not a signature
+ok 25 - copied address is not a signature
+  ---
+  duration_ms: 3.466766
+  type: 'test'
+  ...
+# Subtest: verifier identity and nonce are signature-bound
+ok 26 - verifier identity and nonce are signature-bound
+  ---
+  duration_ms: 12.380047
+  type: 'test'
+  ...
+# Subtest: invitation links, names, whitespace rejected
+ok 27 - invitation links, names, whitespace rejected
+  ---
+  duration_ms: 0.276637
+  type: 'test'
+  ...
+# Subtest: tampered self-certification does not establish a claim
+ok 28 - tampered self-certification does not establish a claim
+  ---
+  duration_ms: 6.735412
+  type: 'test'
+  ...
+# Subtest: doipjs URI dependency preserves HTTPS and simplex full link bytes
+ok 29 - doipjs URI dependency preserves HTTPS and simplex full link bytes
+  ---
+  duration_ms: 0.696261
+  type: 'test'
+  ...
+# Subtest: revoked primary key rejected before connecting
+ok 30 - revoked primary key rejected before connecting
+  ---
+  duration_ms: 3.575399
+  type: 'test'
+  ...
+# Subtest: expired profile key rejected before connecting
+ok 31 - expired profile key rejected before connecting
+  ---
+  duration_ms: 1.209149
+  type: 'test'
+  ...
+# Subtest: broken subkey binding cannot validate a response
+ok 32 - broken subkey binding cannot validate a response
+  ---
+  duration_ms: 6.457643
+  type: 'test'
+  ...
+# Subtest: failed send invalidates its challenge
+ok 33 - failed send invalidates its challenge
+  ---
+  duration_ms: 1.576976
+  type: 'test'
+  ...
+# Subtest: receive transport failure invalidates its challenge
+ok 34 - receive transport failure invalidates its challenge
+  ---
+  duration_ms: 1.705166
+  type: 'test'
+  ...
+# Subtest: manual GnuPG detached signature interoperates
+ok 35 - manual GnuPG detached signature interoperates
+  ---
+  duration_ms: 17.089846
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 423.923029

@@ -12,6 +12,8 @@ npm run demo
 
 `demo` uses mocked chat transport and real disposable keys. It does **not** establish real chat delivery. `test-results.txt` records 35 passing automated tests. `live-test-results.txt` records a separate successful test with two actual disposable SimpleX profiles. The opt-in live harness is `node scripts/live-smoke.js`, using `.local-bin/simplex-chat`. It creates temporary databases, contacts only its other test profile, signs locally, then deletes its databases and test keys. It uses public SimpleX relays. It does not save chat transcripts.
 
+See the [captured demo and full test output](demo/README.md) for a sanitized successful offline run and all 82 passing tests.
+
 ## Request from Keyoxide
 
 Expand the SimpleX claim, opt in to saving the address locally and download the verification request. Saving makes no connection and does not mark the profile verified. Start the disposable verifier CLI described below, then use:

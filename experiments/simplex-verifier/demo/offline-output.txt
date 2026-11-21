@@ -1,0 +1,10 @@
+OFFLINE MOCK TRANSPORT — this run makes no assertion of SimpleX delivery.
+Sanitized capture: disposable fingerprint and synthetic-address digest replaced.
+{
+  "result": "checked",
+  "checkedAt": "2026-11-21T17:15:54.567Z",
+  "primaryFingerprint": "[redacted disposable test-key fingerprint]",
+  "verifier": "monero.love/local-poc",
+  "addressSha256": "[redacted synthetic-address digest]",
+  "statement": "Reached a contact through the claimed address and received a fresh signature from the claimed key."
+}
