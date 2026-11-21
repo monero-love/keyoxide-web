@@ -28,6 +28,8 @@ if any, to sign a "copyright disclaimer" for the program, if necessary. For
 more information on this, and how to apply and follow the GNU AGPL, see <https://www.gnu.org/licenses/>.
 */
 import logger from '../log.js'
+import { matchClaim } from './claimVerification.js'
+import { fetchPublicBytes } from './publicFetch.js'
 import * as doipjs from 'doipjs'
 import { fetchWKD, fetchHKP, fetchSignature, fetchKeybase } from './openpgpProfiles.js'
 import libravatar from 'libravatar'
@@ -36,8 +38,15 @@ const generateAspeProfile = async (id) => {
   logger.debug('Generating an ASPE profile',
     { component: 'aspe_profile_generator', action: 'start', profile_id: id })
 
-  return doipjs.asp.fetchASPE(id)
+  const match = /^aspe:([a-zA-Z0-9.-]+):([a-zA-Z0-9]+)$/.exec(id)
+  if (!match) return { errors: ['Invalid ASP identifier'] }
+  const source = `https://${match[1]}/.well-known/aspe/id/${match[2].toUpperCase()}`
+  return fetchPublicBytes(source)
+    .then(bytes => doipjs.asp.parseProfileJws(bytes.toString('utf8'), id))
     .then(profile => {
+      profile.publicKey.fetch.method = doipjs.enums.PublicKeyFetchMethod.ASPE
+      profile.publicKey.fetch.query = id
+      profile.publicKey.fetch.resolvedUrl = source
       if (process.env.DOMAIN) {
         profile.addVerifier('keyoxide', `${getScheme()}://${process.env.DOMAIN}/${id}`)
       }
@@ -212,9 +221,7 @@ const processAspProfile = async (/** @type {import('doipjs').Profile */ profile)
     })
 
     // Match claims
-    for (const claim of persona.claims) {
-      claim.match()
-    }
+    persona.claims = persona.claims.map(matchClaim)
 
     // Sort claims
     persona.claims.sort((a, b) => {
@@ -247,9 +254,7 @@ const processOpenPgpProfile = async (/** @type {import('doipjs').Profile */ prof
     })
 
     // Match claims
-    for (const claim of persona.claims) {
-      claim.match()
-    }
+    persona.claims = persona.claims.map(matchClaim)
 
     // Sort claims
     persona.claims.sort((a, b) => {

@@ -28,6 +28,9 @@ if any, to sign a "copyright disclaimer" for the program, if necessary. For
 more information on this, and how to apply and follow the GNU AGPL, see <https://www.gnu.org/licenses/>.
 */
 import * as doipjs from 'doipjs';
+import { setSafeLink } from './safe-dom.js';
+import { isSimplexClaim } from '../src/shared/simplex.js';
+import { renderSimplexClaim } from './simplex-claim.js';
 
 export class Claim extends HTMLElement {
     // Specify the attributes to observe
@@ -45,6 +48,11 @@ export class Claim extends HTMLElement {
     }
 
     async verify() {
+        const value = JSON.parse(this.getAttribute('data-claim'));
+        if (isSimplexClaim(value.uri)) {
+            this.updateContent(JSON.stringify(value));
+            return;
+        }
         const claim = doipjs.Claim.fromJSON(JSON.parse(this.getAttribute('data-claim')));
         await claim.verify({
             proxy: {
@@ -59,6 +67,10 @@ export class Claim extends HTMLElement {
     updateContent(value) {
         const root = this;
         const claimJson = JSON.parse(value);
+        if (isSimplexClaim(claimJson.uri)) {
+            renderSimplexClaim(this, claimJson);
+            return;
+        }
         const claim = doipjs.Claim.fromJSON(claimJson);
 
         root.querySelector('.info .title').innerText = claimJson.display.profileName;
@@ -82,7 +94,7 @@ export class Claim extends HTMLElement {
         elContent.innerHTML = ``;
 
         // Handle failed ambiguous claim
-        if (claim.status >= 300 && claim.isAmbiguous()) {
+        if (claim.status >= 300 && (claim.matches.length === 0 || claim.isAmbiguous())) {
             root.querySelector('.info .subtitle').innerText = '---';
 
             const subsection_alert = elContent.appendChild(document.createElement('div'));
@@ -109,20 +121,20 @@ export class Claim extends HTMLElement {
 
         const profile_link = subsection_links_text.appendChild(document.createElement('p'));
         if (claimJson.display.profileUrl) {
-            profile_link.innerHTML = `Profile link: <a rel="me" href="${claimJson.display.profileUrl}" aria-label="link to profile">${claimJson.display.profileUrl}</a>`;
+            setSafeLink(profile_link, 'Profile link: ', claimJson.display.profileUrl, {rel:'me','aria-label':'Link to profile'});
         } else {
             profile_link.innerHTML = `Profile link: not accessible from browser`;
         }
 
         const proof_link = subsection_links_text.appendChild(document.createElement('p'));
         if (claimJson.display.proofUrl) {
-            proof_link.innerHTML = `Proof link: <a href="${claimJson.display.proofUrl}" aria-label="link to profile">${claimJson.display.proofUrl}</a>`;
+            setSafeLink(proof_link, 'Proof link: ', claimJson.display.proofUrl, {'aria-label':'Link to proof'});
         } else {
             proof_link.innerHTML = `Proof link: not accessible from browser`;
         }
 
         // QR Code
-        if (claim.matches[0].profile.qr) {
+        if (claim.matches[0]?.profile.qr) {
             elContent.appendChild(document.createElement('hr'));
 
             const subsection_qr = elContent.appendChild(document.createElement('div'));
@@ -135,7 +147,7 @@ export class Claim extends HTMLElement {
 
             const button_profileQR = subsection_qr_text.appendChild(document.createElement('button'));
             button_profileQR.innerText = `Show profile QR`;
-            button_profileQR.setAttribute('onClick', `window.showQR('${claim.matches[0].profile.qr}', 'url')`);
+            button_profileQR.addEventListener('click', () => window.showQR(claim.matches[0].profile.qr, 'url'));
             button_profileQR.setAttribute('aria-label', `Show QR code linking to profile`);
         }
 

@@ -89,9 +89,7 @@ export function getMetaFromReq (req) {
 
   const semver = `${req.app.get('keyoxide_name')}/${req.app.get('keyoxide_version')}${versionDetails}`
 
-  const sourceUrl = req.app.get('git_hash')
-    ? `https://codeberg.org/keyoxide/keyoxide-web/src/commit/${req.app.get('git_hash')}`
-    : 'https://codeberg.org/keyoxide/keyoxide-web'
+  const sourceUrl = '/source.tar.gz'
 
   return {
     env: req.app.get('env'),

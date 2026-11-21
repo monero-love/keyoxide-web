@@ -34,9 +34,14 @@ import { generateSignatureProfile, utils, generateWKDProfile, generateHKPProfile
 import { Profile } from 'doipjs'
 import { generateProfileTheme, getMetaFromReq, escapedParam } from '../server/utils.js'
 import logger from '../log.js'
+import { isSimplexClaim } from '../shared/simplex.js'
 
 const router = express.Router()
-const bodyParser = bodyParserImport.urlencoded({ extended: false })
+router.use((_req, res, next) => {
+  res.locals.isSimplexClaim = isSimplexClaim
+  next()
+})
+const bodyParser = bodyParserImport.urlencoded({ extended: false, limit: '1mb', parameterLimit: 10 })
 
 let profileRateLimiter = (req, res, next) => {
   next()

@@ -27,252 +27,69 @@ You should also get your employer (if you work as a programmer) or school,
 if any, to sign a "copyright disclaimer" for the program, if necessary. For
 more information on this, and how to apply and follow the GNU AGPL, see <https://www.gnu.org/licenses/>.
 */
-import logger from '../log.js'
-import got from 'got'
 import * as doipjs from 'doipjs'
-import { readKey } from 'openpgp'
+import { readKey, enums } from 'openpgp'
 import { computeWKDLocalPart } from './utils.js'
-import { createHash } from 'node:crypto'
-import Keyv from 'keyv'
+import { fetchPublicBytes } from './publicFetch.js'
 
-let c = null
-if (process.env.ENABLE_EXPERIMENTAL_CACHE) {
-  c = new Keyv()
-
-  logger.debug('OpenPGP cache started',
-    { component: 'openpgp_cache', action: 'start' })
+async function parseKey (bytes) {
+  const text = bytes.toString('utf8')
+  const key = await readKey(text.includes('-----BEGIN PGP PUBLIC KEY BLOCK-----')
+    ? { armoredKey: text }
+    : { binaryKey: new Uint8Array(bytes) })
+  await key.verifyPrimaryKey()
+  const profile = await doipjs.openpgp.parsePublicKey(key)
+  // doipjs selects raw latest certifications. Verify those exact packets before
+  // allowing their claims to participate in any public-proof verification.
+  for (const persona of profile.personas) {
+    const user = key.users.find(user => user.userID?.userID === persona.identifier)
+    const cert = user && [...user.selfCertifications].sort((a, b) => b.created - a.created)[0]
+    try {
+      if (!cert || await user.isRevoked(cert)) throw new Error('Revoked or missing certification')
+      await cert.verify(key.keyPacket, enums.signature.certGeneric, { key: key.keyPacket, userID: user.userID })
+    } catch {
+      persona.claims = []
+    }
+  }
+  return profile
 }
 
-const fetchWKD = (id) => {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      logger.debug('Fetching an OpenPGP profile via WKD',
-        { component: 'wkd_profile_fetcher', action: 'start', profile_id: id })
-
-      let publicKey = null
-      let profile = null
-      let fetchURL = null
-
-      if (!id.includes('@')) {
-        return reject(new Error(`The WKD identifier "${id}" is invalid`))
-      }
-
-      const [, localPart, domain] = /([^@]*)@(.*)/.exec(id)
-      if (!(localPart && domain)) {
-        return reject(new Error(`The WKD identifier "${id}" is invalid`))
-      }
-      const localEncoded = await computeWKDLocalPart(localPart)
-      const localPartEncoded = encodeURIComponent(localPart)
-      const urlAdvanced = `https://openpgpkey.${domain}/.well-known/openpgpkey/${domain}/hu/${localEncoded}?l=${localPartEncoded}`
-      const urlDirect = `https://${domain}/.well-known/openpgpkey/hu/${localEncoded}?l=${localPartEncoded}`
-      let plaintext
-
-      const hash = createHash('md5').update(id).digest('hex')
-      if (c && await c.get(hash)) {
-        profile = doipjs.Profile.fromJSON(JSON.parse(await c.get(hash)))
-
-        logger.debug('WKD profile retrieved from OpenPGP cache',
-          { component: 'openpgp_cache', action: 'retrieve_wkd' })
-
-        return resolve(profile)
-      }
-
-      if (!profile) {
-        try {
-          plaintext = await got(urlAdvanced).then((response) => {
-            if (response.statusCode === 200) {
-              fetchURL = urlAdvanced
-              return new Uint8Array(response.rawBody)
-            }
-            return null
-          })
-        } catch (errorAdvanced) {
-          logger.debug('Failed to fetch an OpenPGP profile via WKD (advanced URL)',
-            { component: 'hkp_profile_fetcher', action: 'failure', profile_id: id, error: errorAdvanced.message })
-
-          try {
-            plaintext = await got(urlDirect).then((response) => {
-              if (response.statusCode === 200) {
-                fetchURL = urlDirect
-                return new Uint8Array(response.rawBody)
-              }
-              return null
-            })
-          } catch (errorDirect) {
-            logger.debug('Failed to fetch an OpenPGP profile via WKD (direct URL)',
-              { component: 'hkp_profile_fetcher', action: 'failure', profile_id: id, error: errorDirect.message })
-
-            return reject(new Error('No public keys could be fetched using WKD'))
-          }
-        }
-
-        if (!plaintext) {
-          return reject(new Error('No public keys could be fetched using WKD'))
-        }
-
-        try {
-          publicKey = await readKey({
-            binaryKey: plaintext
-          })
-        } catch (error) {
-          logger.debug('Failed to fetch an OpenPGP profile via WKD (reading key)',
-            { component: 'hkp_profile_fetcher', action: 'failure', profile_id: id, error: error.message })
-
-          return reject(new Error('No public keys could be read from the data fetched using WKD'))
-        }
-
-        if (!publicKey) {
-          return reject(new Error('No public keys could be read from the data fetched using WKD'))
-        }
-
-        try {
-          profile = await doipjs.openpgp.parsePublicKey(publicKey)
-        } catch (error) {
-          logger.debug('Failed to fetch an OpenPGP profile via WKD (parsing key)',
-            { component: 'hkp_profile_fetcher', action: 'failure', profile_id: id, error: error.message })
-
-          return reject(new Error('No public keys could be fetched using WKD'))
-        }
-
-        profile.publicKey.fetch.method = 'wkd'
-        profile.publicKey.fetch.query = id
-        profile.publicKey.fetch.resolvedUrl = fetchURL
-      }
-
-      if (c && plaintext instanceof Uint8Array) {
-        await c.set(hash, JSON.stringify(profile), 60 * 1000)
-
-        logger.debug('WKD profile stored in OpenPGP cache',
-          { component: 'openpgp_cache', action: 'store_wkd' })
-      }
-
-      logger.debug('Fetched an OpenPGP profile via WKD',
-        { component: 'wkd_profile_fetcher', action: 'done', profile_id: id })
-
-      resolve(profile)
-    })()
-  })
+export async function fetchWKD (id) {
+  const match = /^([^@\s]+)@([a-zA-Z0-9.-]+)$/.exec(id)
+  if (!match) throw new Error('Invalid WKD identifier')
+  const [, local, domain] = match
+  const hash = await computeWKDLocalPart(local)
+  const suffix = `hu/${hash}?l=${encodeURIComponent(local)}`
+  const urls = [`https://openpgpkey.${domain}/.well-known/openpgpkey/${domain}/${suffix}`, `https://${domain}/.well-known/openpgpkey/${suffix}`]
+  for (const url of urls) {
+    try {
+      const profile = await parseKey(await fetchPublicBytes(url))
+      Object.assign(profile.publicKey.fetch, { method: 'wkd', query: id, resolvedUrl: url })
+      return profile
+    } catch { /* Try the documented direct WKD fallback, with the same guards. */ }
+  }
+  throw new Error('No public key could be fetched using WKD')
 }
 
-const fetchHKP = (id, keyserverDomain) => {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      logger.debug('Fetching an OpenPGP profile via HKP',
-        { component: 'hkp_profile_fetcher', action: 'start', profile_id: id, keyserver_domain: keyserverDomain || '' })
-
-      let profile = null
-      let fetchURL = null
-
-      const keyserverDomainNormalized = keyserverDomain || 'keys.openpgp.org'
-
-      let query = ''
-      if (id.includes('@')) {
-        query = id
-      } else {
-        let sanitizedId = id
-        const whitespaceRegex = /\s/g
-        if (whitespaceRegex.test(id)) {
-          sanitizedId = id.replaceAll(whitespaceRegex, '')
-        }
-        query = `0x${sanitizedId}`
-      }
-
-      fetchURL = `https://${keyserverDomainNormalized}/pks/lookup?op=get&options=mr&search=${query}`
-
-      const hash = createHash('md5').update(`${query}__${keyserverDomainNormalized}`).digest('hex')
-
-      if (c && await c.get(hash)) {
-        profile = doipjs.Profile.fromJSON(JSON.parse(await c.get(hash)))
-
-        logger.debug('HKP profile retrieved from OpenPGP cache',
-          { component: 'openpgp_cache', action: 'store_hkp' })
-
-        return resolve(profile)
-      }
-
-      if (!profile) {
-        try {
-          profile = await doipjs.openpgp.fetchHKP(query, keyserverDomainNormalized)
-        } catch (error) {
-          logger.debug('Failed to fetch an OpenPGP profile via HKP',
-            { component: 'hkp_profile_fetcher', action: 'failure', profile_id: id, keyserver_domain: keyserverDomain || '', error: error.message })
-
-          profile = null
-        }
-      }
-
-      if (!profile) {
-        return reject(new Error('No public keys could be fetched using HKP'))
-      }
-
-      profile.publicKey.fetch.method = 'hkp'
-      profile.publicKey.fetch.query = id
-      profile.publicKey.fetch.resolvedUrl = fetchURL
-
-      if (c && profile instanceof doipjs.Profile) {
-        await c.set(hash, JSON.stringify(profile), 60 * 1000)
-
-        logger.debug('HKP profile stored in OpenPGP cache',
-          { component: 'openpgp_cache', action: 'store_hkp' })
-      }
-
-      logger.debug('Fetched an OpenPGP profile via HKP',
-        { component: 'hkp_profile_fetcher', action: 'done', profile_id: id, keyserver_domain: keyserverDomain || '' })
-
-      resolve(profile)
-    })()
-  })
+export async function fetchHKP (id, keyserverDomain = 'keys.openpgp.org') {
+  if (!/^[a-zA-Z0-9.-]+$/.test(keyserverDomain)) throw new Error('Invalid keyserver hostname')
+  const query = id.includes('@') ? id : `0x${id.replace(/\s/g, '')}`
+  const url = `https://${keyserverDomain}/pks/lookup?${new URLSearchParams({ op: 'get', options: 'mr', search: query })}`
+  const profile = await parseKey(await fetchPublicBytes(url))
+  Object.assign(profile.publicKey.fetch, { method: 'hkp', query: id, resolvedUrl: url })
+  return profile
 }
 
-const fetchSignature = (signature) => {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      let profile = null
-
-      // Process the signature
-      try {
-        profile = await doipjs.signatures.parse(signature)
-        // TODO Find the URL to the key
-      } catch (error) {
-        return reject(new Error(`Signature could not be properly read (${error.message})`))
-      }
-
-      // Check if a key was fetched
-      if (!profile) {
-        return reject(new Error('No profile could be fetched'))
-      }
-
-      resolve(profile)
-    })()
-  })
+export async function fetchKeybase (username, fingerprint) {
+  if (!/^[a-zA-Z0-9_]+$/.test(username) || !/^[a-fA-F0-9]{40,64}$/.test(fingerprint)) throw new Error('Invalid Keybase identifier')
+  const url = `https://keybase.io/${username}/pgp_keys.asc?fingerprint=${fingerprint}`
+  const profile = await parseKey(await fetchPublicBytes(url))
+  Object.assign(profile.publicKey.fetch, { method: 'http', query: username, resolvedUrl: url })
+  return profile
 }
 
-const fetchKeybase = (username, fingerprint) => {
-  return new Promise((resolve, reject) => {
-    (async () => {
-      let profile = null
-      let fetchURL = null
-
-      try {
-        profile = await doipjs.openpgp.fetchKeybase(username, fingerprint)
-        fetchURL = `https://keybase.io/${username}/pgp_keys.asc?fingerprint=${fingerprint}`
-      } catch (error) {
-        return reject(new Error(`No public keys could be fetched from Keybase (${error})`))
-      }
-
-      if (!profile) {
-        return reject(new Error('No public keys could be fetched from Keybase'))
-      }
-
-      profile.publicKey.fetch.method = 'http'
-      profile.publicKey.fetch.resolvedUrl = fetchURL
-
-      resolve(profile)
-    })()
-  })
+export async function fetchSignature () {
+  // Upstream signature profiles fetch key URLs from unverified message metadata.
+  // The release supports signed-key profiles and the local detached challenge.
+  throw new Error('Legacy signature profiles are disabled in this release')
 }
-
-export { fetchWKD }
-export { fetchHKP }
-export { fetchSignature }
-export { fetchKeybase }

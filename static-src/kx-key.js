@@ -27,6 +27,8 @@ You should also get your employer (if you work as a programmer) or school,
 if any, to sign a "copyright disclaimer" for the program, if necessary. For
 more information on this, and how to apply and follow the GNU AGPL, see <https://www.gnu.org/licenses/>.
 */
+import { setSafeLink } from './safe-dom.js';
+
 export class Key extends HTMLElement {
     // Specify the attributes to observe
     static get observedAttributes() {
@@ -62,7 +64,7 @@ export class Key extends HTMLElement {
         const subsection_links_text = subsection_links.appendChild(document.createElement('div'));
 
         const profile_link = subsection_links_text.appendChild(document.createElement('p'));
-        profile_link.innerHTML = `Key link: <a class="u-key" rel="pgpkey" href="${data.fetch.resolvedUrl}" aria-label="Link to cryptographic key">${data.fetch.resolvedUrl}</a>`;
+        setSafeLink(profile_link, 'Key link: ', data.fetch.resolvedUrl, {class:'u-key',rel:'pgpkey','aria-label':'Link to cryptographic key'});
 
         if (data.keyType === 'openpgp') {
             elContent.appendChild(document.createElement('hr'));
@@ -78,7 +80,7 @@ export class Key extends HTMLElement {
     
             const button_fingerprintQR = subsection_qr_text.appendChild(document.createElement('button'));
             button_fingerprintQR.innerText = `Show OpenPGP fingerprint QR`;
-            button_fingerprintQR.setAttribute('onClick', `window.showQR('${data.fingerprint}', 'fingerprint')`);
+            button_fingerprintQR.addEventListener('click', () => window.showQR(data.fingerprint, 'fingerprint'));
             button_fingerprintQR.setAttribute('aria-label', `Show QR code for cryptographic fingerprint`);
         }
     }

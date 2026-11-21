@@ -1,3 +1,9 @@
+# 5.1.0-simplex.1-rc.1 (2026-11-21)
+
+Private SimpleX local-verifier release candidate. Adds consent-based local request export and manual OpenPGP challenge verification. Hardens profile fetching, browser rendering, state persistence and local transport, upgrades cryptographic and application dependencies, and ships a restricted non-root image with corresponding source.
+
+Breaking changes: legacy server proof fetching, proxy APIs and signature profiles are disabled in the supported production configuration. Use Node 22.23.5. See `docs/releases/simplex-rc1.md` for checks, operating limits and rollback. No deployment or public badge is included.
+
 # Changelog
 All notable changes to this project will be documented in this file.
 

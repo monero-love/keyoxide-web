@@ -1,0 +1,9 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Public upstream ASP profile identifier in app developer attribution, not a credential"
+regexTarget = "match"
+regexes = ['''keyoxide\.org:WHM3OC7UFRARIVEXDXUV4GVXNQ''']
+paths = ['''views/apps\.pug$''']
+condition = "AND"

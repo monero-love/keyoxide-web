@@ -1,34 +1,20 @@
-version: '3'
-
-# To make this example setup work with the proxy container,
-# it is expected to use a reverse proxy like nginx, traefik, caddy, etc.
-# instead of accessing the containers using their ports directly.
-
+# Local release candidate. TLS termination and rollout require separate approval.
 services:
   keyoxide:
-    image: codeberg.org/keyoxide/keyoxide-web:latest
+    build: .
+    image: monero-love-keyoxide:simplex-rc1
+    init: true
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - "127.0.0.1:3000:3000"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=16m"]
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
     environment:
-      - DOMAIN=
-      ## The onion URL to advertise in the HTTP response headers
-      # - ONION_URL=
-      ## For ActivityPub verification
-      # - ACTIVITYPUB_URL=
-      # - ACTIVITYPUB_PUBLIC_KEY=
-      # - ACTIVITYPUB_PRIVATE_KEY=
-      ## For IRC verification
-      # - IRC_NICK=
-      ## For Telegram verification
-      # - TELEGRAM_TOKEN=
-      ## For Twitter verification
-      # - TWITTER_BEARER_TOKEN=
-      ## For Matrix verification
-      # - MATRIX_ROOM_ID=
-      # - MATRIX_INSTANCE=
-      # - MATRIX_ACCESS_TOKEN=
-      ## For XMPP verification
-      # - XMPP_SERVICE=
-      # - XMPP_USERNAME=
-      # - XMPP_PASSWORD=
+      NODE_ENV: production
+      ENABLE_PROXY_MODULE: "false"
+      ENABLE_SERVER_VERIFICATION: "false"

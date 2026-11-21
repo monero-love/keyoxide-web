@@ -40,6 +40,7 @@ const anonymize = format((info) => {
     info.fingerprint = undefined
     info.request_path = undefined
     info.request_ip = undefined
+    info.error = undefined
   }
   return info
 })
@@ -64,7 +65,7 @@ const logger = createLogger({
   },
   transports: [
     new transports.Console(),
-    new transports.File({ filename: 'logs/keyoxide.log' })
+    ...(process.env.LOG_FILE === 'true' ? [new transports.File({ filename: 'logs/keyoxide.log' })] : [])
   ]
 })
 

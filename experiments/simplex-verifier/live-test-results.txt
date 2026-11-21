@@ -1,0 +1,17 @@
+Run date: 2026-11-21
+SimpleX Chat CLI: v7.1.4.0, downloaded release SHA-256 verified against GitHub asset digest
+Command: node scripts/live-smoke.js
+Two fresh disposable local profiles, separate CLI processes and databases
+Public relay network used only to connect the two test profiles
+PASS: reusable full contact address created
+PASS: exact address added to real OpenPGP UID self-certification
+PASS: connection-plan classification and pending-connection/contact-ID binding
+PASS: challenge received unchanged by operator in direct chat
+PASS: operator signed locally using GnuPG --armor --detach-sign with a valid signing subkey
+PASS: detached signature returned in the same direct chat and verified
+PASS: replay rejected
+Temporary profile databases, challenge records and test key homes deleted
+No addresses, keys, nonces, signatures or chat transcripts included in this report
+Other adversarial cases covered by the automated mocked transport suite, not separate live deliveries
+
+Rerun after release hardening on 2026-11-21: success and replay rejection passed with OpenPGP 6.3.3, ws 8.23.0 and durable private state.

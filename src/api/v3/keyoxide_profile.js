@@ -31,7 +31,8 @@ import express from 'express'
 import { check, validationResult } from 'express-validator'
 import Ajv from 'ajv/dist/2020.js'
 import * as dotenv from 'dotenv'
-import { Claim } from 'doipjs'
+import { Profile } from 'doipjs'
+import { verifyProfileClaims } from '../../server/claimVerification.js'
 import { generateAspeProfile, generateWKDProfile, generateHKPProfile, generateAutoProfile } from '../../server/index.js'
 import { claimSchema, personaSchema, profileSchema, serviceProviderSchema } from '../../schemas.js'
 dotenv.config()
@@ -43,46 +44,12 @@ const ajv = new Ajv({
 
 const apiProfileValidate = ajv.compile(profileSchema)
 
-const doVerification = async (profile) => {
-  const promises = []
-  const results = []
-  const verificationOptions = {
-    proxy: {
-      hostname: process.env.PROXY_HOSTNAME,
-      policy: (process.env.PROXY_HOSTNAME !== '') ? 'adaptive' : 'never'
-    }
+const doVerification = profile => verifyProfileClaims(profile, {
+  proxy: {
+    hostname: process.env.PROXY_HOSTNAME,
+    policy: (process.env.PROXY_HOSTNAME !== '') ? 'adaptive' : 'never'
   }
-
-  // Return early if no users in key
-  if (!profile.personas) {
-    return profile
-  }
-
-  for (let iUser = 0; iUser < profile.personas.length; iUser++) {
-    const user = profile.personas[iUser]
-
-    for (let iClaim = 0; iClaim < user.claims.length; iClaim++) {
-      const claim = user.claims[iClaim]
-
-      promises.push(
-        new Promise((resolve) => {
-          (async () => {
-            await claim.verify(verificationOptions)
-            results.push([iUser, iClaim, claim])
-            resolve()
-          })()
-        })
-      )
-    }
-  }
-  await Promise.all(promises)
-
-  for (const result of results) {
-    profile.personas[result[0]].claims[result[1]] = result[2]
-  }
-
-  return profile
-}
+})
 
 const validate = (profile) => {
   const valid = apiProfileValidate(profile)
@@ -100,6 +67,10 @@ router.get('/fetch',
     if (!valRes.isEmpty()) {
       res.status(400).send(valRes)
       return
+    }
+
+    if (req.query.doVerification && process.env.ENABLE_SERVER_VERIFICATION !== 'true') {
+      return res.status(403).send({ errors: ['Server-side proof fetching is disabled'] })
     }
 
     // Generate profile
@@ -126,7 +97,11 @@ router.get('/fetch',
 
     // Do verification
     if (req.query.doVerification) {
-      data = await doVerification(data)
+      try {
+        data = await doVerification(data)
+      } catch (_error) {
+        return res.status(500).send({ errors: ['Profile verification failed'] })
+      }
     }
 
     try {
@@ -156,6 +131,10 @@ router.get('/fetch',
 )
 
 router.get('/verify',
+  (_req, res, next) => {
+    if (process.env.ENABLE_SERVER_VERIFICATION !== 'true') return res.status(403).send({ errors: ['Server-side proof fetching is disabled'] })
+    next()
+  },
   check('data').exists().isJSON(),
   async (req, res) => {
     const valRes = validationResult(req)
@@ -164,10 +143,23 @@ router.get('/verify',
       return
     }
 
-    const profile = Claim.fromJson(req.query.data)
+    let profile
+    try {
+      const supplied = JSON.parse(req.query.data)
+      validate(supplied)
+      profile = Profile.fromJSON(supplied)
+      if (!(profile instanceof Profile)) throw new Error('Invalid profile')
+    } catch (_error) {
+      return res.status(400).send({ errors: ['Invalid profile data'] })
+    }
 
     // Do verification
-    let data = await doVerification(profile)
+    let data
+    try {
+      data = await doVerification(profile)
+    } catch (_error) {
+      return res.status(500).send({ errors: ['Profile verification failed'] })
+    }
 
     try {
       data = data.toJSON()

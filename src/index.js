@@ -31,7 +31,9 @@ import express from 'express'
 import * as httpContext from 'express-http-context2'
 import { nanoid } from 'nanoid'
 import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { execSync } from 'node:child_process'
+import { rateLimit } from 'express-rate-limit'
 import { stringReplace } from 'string-replace-middleware'
 import * as pug from 'pug'
 import * as dotenv from 'dotenv'
@@ -46,7 +48,7 @@ dotenv.config()
 
 // Get information about the last git commit
 let gitBranch = process.env.CI_COMMIT_BRANCH ?? process.env.COMMIT_BRANCH
-if (!gitBranch) {
+if (!gitBranch && process.env.NODE_ENV !== 'production') {
   try {
     gitBranch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim()
   } catch (_err) {
@@ -55,7 +57,7 @@ if (!gitBranch) {
   }
 }
 let gitHash = process.env.CI_COMMIT_SHA ?? process.env.COMMIT_SHA
-if (!gitHash) {
+if (!gitHash && process.env.NODE_ENV !== 'production') {
   try {
     gitHash = execSync('git rev-parse HEAD').toString().trim()
   } catch (_err) {
@@ -64,9 +66,15 @@ if (!gitHash) {
   }
 }
 
+if (process.env.NODE_ENV === 'production' &&
+    (process.env.ENABLE_PROXY_MODULE === 'true' || process.env.ENABLE_SERVER_VERIFICATION === 'true')) {
+  throw new Error('Unrestricted legacy network modules are not supported by this production release')
+}
 const app = express()
 const packageData = JSON.parse(readFileSync('./package.json'))
 
+app.disable('x-powered-by')
+app.set('query parser', 'simple')
 app.set('env', process.env.NODE_ENV || 'production')
 app.engine('pug', pug.__express).set('view engine', 'pug')
 app.set('port', process.env.PORT || 3000)
@@ -80,6 +88,16 @@ app.set('onion_url', process.env.ONION_URL)
 app.set('discovery_profile', process.env.DISCOVERY_PROFILE || 'instances@keyoxide.org')
 
 // Middlewares
+app.use(rateLimit({ windowMs: 60000, limit: 60, standardHeaders: 'draft-7', legacyHeaders: false }))
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('X-Frame-Options', 'DENY')
+  res.setHeader('Referrer-Policy', 'no-referrer')
+  res.setHeader('Content-Security-Policy', "object-src 'none'; base-uri 'none'; frame-ancestors 'none'")
+  next()
+})
+app.get('/healthz', (_req, res) => res.status(200).json({ status: 'ok' }))
+app.get('/source.tar.gz', (_req, res) => res.sendFile(resolve('source.tar.gz')))
 app.use(httpContext.middleware)
 app.use((req, res, next) => {
   res.setHeader('Permissions-Policy', 'interest-cohort=()')
@@ -119,9 +137,18 @@ if ((process.env.ENABLE_MAIN_MODULE ?? 'true') === 'true') {
   app.use('/', profileRoute)
 }
 
-app.listen(app.get('port'), () => {
+const server = app.listen(app.get('port'), process.env.HOST || '127.0.0.1', () => {
   logger.info(`Server listening at http://localhost:${app.get('port')}`,
     { component: 'http_server', action: 'start' })
 })
+
+server.requestTimeout = 15000
+server.headersTimeout = 10000
+for (const signal of ['SIGTERM', 'SIGINT']) {
+  process.once(signal, () => {
+    server.close(() => process.exit(0))
+    setTimeout(() => process.exit(1), 10000).unref()
+  })
+}
 
 export default app

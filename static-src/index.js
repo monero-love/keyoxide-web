@@ -48,3 +48,7 @@ customElements.define('kx-claim', kxClaim.Claim)
 // Run scripts
 ui.init()
 kx.init()
+// Profile identifiers remain data, including quotes and HTML delimiters.
+document.querySelectorAll('[data-qr]').forEach(button => {
+    button.addEventListener('click', () => utils.showQR(button.dataset.qr, button.dataset.qrType));
+});

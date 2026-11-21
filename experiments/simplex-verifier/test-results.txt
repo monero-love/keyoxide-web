@@ -1,0 +1,6 @@
+Release candidate audit 2026-11-21
+Node 22.23.5, OpenPGP 6.3.3, ws 8.23.0
+35 automated tests passed, 0 failed, 0 skipped.
+Mock chat transport with disposable local signing keys.
+Coverage: valid primary and signing-subkey signatures, wrong key, changed address, invalid claims, expired/replayed challenges, wrong chat, no response, transport failure, request envelopes, engine classification, durable private state, malformed WebSocket messages, bounded event queue and CLI file input.
+Real delivery is recorded separately in live-test-results.txt. No transcript retained.

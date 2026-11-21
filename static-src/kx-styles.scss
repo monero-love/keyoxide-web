@@ -282,3 +282,10 @@ kx-claim {
         }
     }
 }
+kx-claim[data-status="unchecked"] {
+    .verificationStatus { display: none; }
+    .simplex-address, pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+    .simplex-consent { display: block; margin: 1rem 0; }
+    .simplex-consent input { width: auto; margin-right: 0.5rem; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+}

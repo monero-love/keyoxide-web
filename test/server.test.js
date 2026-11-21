@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+import { describe, it, before, after, beforeEach, afterEach } from 'node:test'
 import 'chai/register-should.js'
 import esmock from 'esmock'
 import * as doipjs from 'doipjs'
@@ -45,7 +47,7 @@ describe('server', function () {
             /** @type {import('doipjs').Profile */
             let profile;
 
-            this.beforeEach(async () => {
+            beforeEach(async () => {
 
                 // Common arrangement pieces that don't change per test
                 fingerprint = '79895B2E0F87503F1DDE80B649765D7F0DDD9BD5'
@@ -71,7 +73,7 @@ describe('server', function () {
                 })
             })
 
-            this.afterEach(() => {
+            afterEach(() => {
                 process.env = _env
             })
 

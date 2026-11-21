@@ -16,17 +16,18 @@ mixin generatePersona(persona, isPrimary)
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
         |  #{persona.description}
     each claim in persona.claims
-      if claim.matches.length > 0
-        kx-claim.kx-item(data-claim=claim,data-status='running')
+      - const simplex = isSimplexClaim(claim.uri)
+      if simplex || claim.matches.length > 0
+        kx-claim.kx-item(data-claim=claim,data-status=simplex ? 'unchecked' : 'running',data-skip=simplex ? 'true' : undefined)
           details(aria-label="Claim")
             summary
               .info
-                img(src=`https://design.keyoxide.org/brands/service-providers/_/icon.svg` onerror="this.src='https://design.keyoxide.org/brands/service-providers/_/icon.svg'")
+                img(src=simplex ? '/static/img/link.svg' : 'https://design.keyoxide.org/brands/service-providers/_/icon.svg' alt='')
                 p
-                  span.title= claim.display.profileName
+                  span.title= simplex ? 'SimpleX link' : claim.display.profileName
                   span.subtitle-wrapper
                     |  [
-                    span.subtitle= claim.display.serviceproviderName
+                    span.subtitle= simplex ? 'Not checked' : claim.display.serviceproviderName
                     | ]
               .icons
                 .verificationStatus
@@ -41,14 +42,18 @@ mixin generatePersona(persona, isPrimary)
               .subsection
                 img(src='/static/img/link.png')
                 div
-                  p Claim link: 
-                    a(rel="me" href=claim.uri aria-label="Link to claim")= claim.uri
+                  if simplex
+                    p This SimpleX link has not been checked. A reusable contact address needs an explicit local check.
+                    code= claim.uri
+                  else
+                    p Claim link:
+                      a(rel="me" href=claim.uri aria-label="Link to claim")= claim.uri
 
 block content
   if (data && 'publicKey' in data)
     script.
       kx = {
-        publicKey: !{JSON.stringify(data.publicKey)}
+        publicKey: !{JSON.stringify(data.publicKey).replace(/</g, '\\u003c')}
       }
 
   if (data && 'errors' in data && data.errors.length > 0)
@@ -142,8 +147,8 @@ block content
               +generatePersona(persona, false)
           h2 Profile
           if data.verifiers.length > 0
-            button.themed(onClick=`showQR('${data.verifiers[0].url}', 'profile_verifier_url')` aria-label='Show profile ID QR') Keyoxide profile QR
-          button.themed(onClick=`showQR('${data.identifier}', 'profile_identifier')` aria-label='Show profile ID QR') Profile ID QR
+            button.themed(data-qr=data.verifiers[0].url data-qr-type='profile_verifier_url' aria-label='Show profile ID QR') Keyoxide profile QR
+          button.themed(data-qr=data.identifier data-qr-type='profile_identifier' aria-label='Show profile ID QR') Profile ID QR
 
     section
       h2 Profile information

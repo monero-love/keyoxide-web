@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-21",
+  "release": "5.1.0-simplex.1-rc.1",
+  "verifier": "0.1.0-rc.1",
+  "node": "22.23.5",
+  "tests": {
+    "keyoxide": 45,
+    "verifier": 35,
+    "browser": 2,
+    "failed": 0,
+    "liveTwoDisposableProfiles": "passed, signing subkey and replay rejection"
+  },
+  "audits": {
+    "npmAllDependencies": 0,
+    "verifierNpmAllDependencies": 0,
+    "trivyImageVulnerabilitiesAllSeverities": 0,
+    "trivyConfigPassed": 27,
+    "trivyConfigFailed": 0,
+    "gitleaksSourceFindings": 0,
+    "sourceLicenseFiles": 52
+  },
+  "tools": {
+    "trivy": "0.76.2",
+    "gitleaks": "8.30.1",
+    "playwright": "1.65.1"
+  },
+  "lockfileSha256": {
+    "package-lock.json": "4ffb6bd1a26a7bac08798489d779f4d20eb06cb5ffc5a8348f038e113e10ba0a",
+    "experiments/simplex-verifier/package-lock.json": "c18bdd56c408aae065148cb4d4abdd3c170b5e948ea16b377e4904a0eb4f4733"
+  },
+  "notes": [
+    "Self-audit and automated checks, not an independent penetration test.",
+    "One exact public ASP identifier allowlisted for secret scan.",
+    "No deploy, public badge, upstream PR, signing keys or transcripts.",
+    "Final image identity, detailed reports and SBOMs are local ignored release artifacts.",
+    "Remote CI configured but not observed running."
+  ]
+}

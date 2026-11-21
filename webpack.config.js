@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+import webpack from 'webpack'
 import { dirname, resolve } from 'path'
 import { fileURLToPath } from 'url'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
@@ -57,13 +59,15 @@ export default (env) => {
                 }
             },
             plugins: [
+                // Compile audited source dependencies, not stale npm prebuilt bundles.
+                new webpack.NormalModuleReplacementPlugin(/fetcher[\\/]index\.js$/, resource => {
+                    if (resource.context.includes('doipjs')) resource.request = resolve(__dirname, 'node_modules/doipjs/src/fetcher/index.minimal.js');
+                }),
                 new MiniCssExtractPlugin(),
                 new CopyPlugin({
                     patterns: [
                         { from: './static-src/files/', to: '../static/' },
                         { from: './node_modules/openpgp/dist/openpgp.js', to: '../static/openpgp.js' },
-                        { from: './node_modules/doipjs/dist/doip.core.js', to: '../static/doip.js' },
-                        { from: './node_modules/doipjs/dist/doip.fetchers.minimal.js', to: '../static/doipFetchers.js' },
                     ],
                     options: {
                         concurrency: 10,
@@ -71,7 +75,6 @@ export default (env) => {
                 }),
             ],
             externals: {
-                doipjs: 'doip',
                 openpgp: 'openpgp'
             }
         }

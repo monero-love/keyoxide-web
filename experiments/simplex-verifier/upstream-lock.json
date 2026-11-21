@@ -1,0 +1,22 @@
+{
+  "repositories": {
+    "doipjs": {
+      "url": "https://codeberg.org/keyoxide/doipjs.git",
+      "commit": "6c128062b558faf60333f7a70181925e0e7dcadd"
+    },
+    "keyoxide-web": {
+      "url": "https://codeberg.org/keyoxide/keyoxide-web.git",
+      "commit": "b95841126b2644352ea1027cc87c82eae14d1a7a"
+    },
+    "simplex-chat": {
+      "url": "https://github.com/simplex-chat/simplex-chat.git",
+      "commit": "cb4b50db169a2638c78e0b41730d5759c559b473"
+    }
+  },
+  "simplexCli": {
+    "version": "v7.1.4",
+    "url": "https://github.com/simplex-chat/simplex-chat/releases/download/v7.1.4/simplex-chat-ubuntu-22_04-x86_64",
+    "sha256": "344e52fb4794bf86b0ec01534692f9b930de2c36b3af21dad45045e5af59f22f",
+    "githubDigestMatched": true
+  }
+}

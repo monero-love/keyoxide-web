@@ -34,3 +34,6 @@ ignore
 dist
 static
 logs
+/test-results/
+/playwright-report/
+/release-artifacts/

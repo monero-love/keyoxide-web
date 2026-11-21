@@ -1,6 +1,6 @@
 {
   "name": "keyoxide-web",
-  "version": "5.1.0",
+  "version": "5.1.0-simplex.1-rc.1",
   "description": "Verifying online identity with cryptography",
   "main": "./src/index.js",
   "type": "module",
@@ -15,13 +15,12 @@
     "express-http-context2": "^1.0.0",
     "express-rate-limit": "^7.0.1",
     "express-validator": "^6.13.0",
-    "got": "^11.8.2",
     "hash-wasm": "^4.9.0",
+    "ipaddr.js": "2.5.0",
     "jstransformer-markdown-it": "^3.0.0",
-    "keyv": "^4.5.0",
     "libravatar": "^3.0.0",
     "nanoid": "^5.0.1",
-    "openpgp": "^5.5.0",
+    "openpgp": "6.3.3",
     "pug": "^3.0.2",
     "qrcode": "^1.4.4",
     "string-replace-middleware": "^1.0.2",
@@ -30,16 +29,17 @@
   "devDependencies": {
     "@biomejs/biome": "1.8.2",
     "@eslint/js": "^9.5.0",
+    "@playwright/test": "1.65.1",
     "@vercel/ncc": "^0.34.0",
     "chai": "^4.3.6",
-    "copy-webpack-plugin": "^11.0.0",
+    "copy-webpack-plugin": "14.0.0",
     "css-loader": "^6.6.0",
     "eslint": "^9.5.0",
-    "esmock": "^2.5.0",
+    "esmock": "3.0.0",
     "globals": "^15.6.0",
+    "jsdom": "26.1.0",
     "license-check-and-add": "^4.0.5",
     "mini-css-extract-plugin": "^2.5.3",
-    "mocha": "^10.1.0",
     "nodemon": "^3.0.3",
     "sass": "^1.67.0",
     "sass-loader": "^13.3.2",
@@ -53,21 +53,25 @@
     "start": "node ./",
     "dev": "LOG_LEVEL=debug npm run watch & npm run build:static:dev",
     "pretest": "npm run lint",
-    "test": "mocha",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
     "watch": "nodemon --config nodemon.json ./",
     "build": "npm run build:server && npm run build:static",
     "build:server": "ncc build ./src/index.js -o dist",
     "build:static": "webpack --config webpack.config.js --env static=true --env mode=production",
     "build:static:dev": "webpack --config webpack.config.js --env static=true --env mode=development",
-    "lint": "npm run standard:check & npm run eslint:check & npm run biome:check",
+    "lint": "npm run standard:check && npm run eslint:check && npm run biome:check",
     "standard:check": "standard ./src",
     "standard:fix": "standard --fix ./src",
     "biome:check": "npx @biomejs/biome check ./src",
     "biome:fix": "npx @biomejs/biome check --apply ./src",
     "eslint:check": "npx eslint ./src/**",
-    "license:check": "license-check-and-add check",
+    "license:check": "node scripts/check-licenses.js",
     "license:add": "license-check-and-add add",
-    "license:remove": "license-check-and-add remove"
+    "license:remove": "license-check-and-add remove",
+    "preview:simplex": "node scripts/simplex-preview.js",
+    "test:browser": "playwright test",
+    "test:verifier": "npm test --prefix experiments/simplex-verifier",
+    "check:release": "npm run license:check && npm test && npm run test:verifier && npm run build && npm run test:browser && npm audit --audit-level=low && npm audit --prefix experiments/simplex-verifier --audit-level=low"
   },
   "repository": {
     "type": "git",
@@ -82,5 +86,14 @@
     "identity"
   ],
   "author": "Yarmo Mackenbach <yarmo@yarmo.eu> (https://yarmo.eu)",
-  "license": "AGPL-3.0-or-later"
+  "license": "AGPL-3.0-or-later",
+  "overrides": {
+    "jstransformer-markdown-it": {
+      "markdown-it": "15.0.3"
+    },
+    "openpgp": "$openpgp"
+  },
+  "engines": {
+    "node": ">=22.23.5 <23"
+  }
 }
