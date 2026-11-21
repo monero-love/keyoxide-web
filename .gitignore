@@ -37,3 +37,5 @@ logs
 /test-results/
 /playwright-report/
 /release-artifacts/
+/deploy/*.env
+/deploy/generated/

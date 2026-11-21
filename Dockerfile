@@ -18,6 +18,8 @@ RUN apk add --no-cache libcrypto3=3.5.9-r1 libssl3=3.5.9-r1 zlib=1.4-r0
 RUN rm -rf /usr/local/lib/node_modules /opt/yarn-* /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /usr/local/bin/yarn /usr/local/bin/yarnpkg
 ARG CI_COMMIT_SHA
 ARG CI_COMMIT_BRANCH
+LABEL org.opencontainers.image.source="https://github.com/monero-love/keyoxide-web" \
+      org.opencontainers.image.revision=$CI_COMMIT_SHA
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000 \
     ENABLE_PROXY_MODULE=false ENABLE_SERVER_VERIFICATION=false \
     NODE_OPTIONS=--max-old-space-size=256 \

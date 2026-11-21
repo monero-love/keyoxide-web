@@ -1,0 +1,40 @@
+# Standalone deployment file. Use an explicitly tested immutable image ID.
+services:
+  web:
+    image: ${KEYOXIDE_IMAGE:?Set the audited image ID from manifest.json}
+    pull_policy: never
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${KEYOXIDE_PORT:-3301}:3000"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=16m"]
+    mem_limit: 512m
+    cpus: 1.0
+    pids_limit: 128
+    stop_grace_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      DOMAIN: ${KEYOXIDE_DOMAIN:-keyoxide.net}
+      SCHEME: https
+      PROXY_SCHEME: https
+      PROXY_HOSTNAME: ${KEYOXIDE_DOMAIN:-keyoxide.net}
+      TRUST_PROXY_IPS: ${TRUST_PROXY_IPS:?Set the exact Docker gateway IP used by host nginx}
+      RATE_LIMIT_MAX: "60"
+      ENABLE_PUBLIC_PROOF_PROXY: "true"
+      ENABLE_PROXY_MODULE: "false"
+      ENABLE_SERVER_VERIFICATION: "false"
+      LOG_FILE: "false"
+    networks: [edge]
+networks:
+  edge:
+    external: true
+    name: ${KEYOXIDE_NETWORK:?Set a dedicated existing Docker network}

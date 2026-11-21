@@ -17,3 +17,9 @@ logs
 test-results
 playwright-report
 release-artifacts
+
+**/*.pem
+**/*.key
+**/*.crt
+deploy/*.env
+deploy/generated

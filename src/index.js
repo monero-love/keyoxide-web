@@ -33,7 +33,7 @@ import { nanoid } from 'nanoid'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { execSync } from 'node:child_process'
-import { rateLimit } from 'express-rate-limit'
+import { configureDeployment } from './server/deployment.js'
 import { stringReplace } from 'string-replace-middleware'
 import * as pug from 'pug'
 import * as dotenv from 'dotenv'
@@ -88,15 +88,7 @@ app.set('onion_url', process.env.ONION_URL)
 app.set('discovery_profile', process.env.DISCOVERY_PROFILE || 'instances@keyoxide.org')
 
 // Middlewares
-app.use(rateLimit({ windowMs: 60000, limit: 60, standardHeaders: 'draft-7', legacyHeaders: false }))
-app.use((_req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff')
-  res.setHeader('X-Frame-Options', 'DENY')
-  res.setHeader('Referrer-Policy', 'no-referrer')
-  res.setHeader('Content-Security-Policy', "object-src 'none'; base-uri 'none'; frame-ancestors 'none'")
-  next()
-})
-app.get('/healthz', (_req, res) => res.status(200).json({ status: 'ok' }))
+configureDeployment(app, process.env, { version: packageData.version, revision: gitHash || null })
 app.get('/source.tar.gz', (_req, res) => res.sendFile(resolve('source.tar.gz')))
 app.use(httpContext.middleware)
 app.use((req, res, next) => {

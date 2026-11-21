@@ -30,6 +30,7 @@ more information on this, and how to apply and follow the GNU AGPL, see <https:/
 import express from 'express'
 import keyoxideProfileApiRouter from './keyoxide_profile.js'
 import proxyGetApiRouter from './proxy_get.js'
+import { publicProofRouter } from './public_proof.js'
 
 const router = express.Router()
 
@@ -37,7 +38,9 @@ if ((process.env.ENABLE_MAIN_MODULE ?? 'true') === 'true') {
   router.use('/profile', keyoxideProfileApiRouter)
 }
 
-if (process.env.ENABLE_PROXY_MODULE === 'true') {
+if (process.env.ENABLE_PUBLIC_PROOF_PROXY === 'true') {
+  router.use('/get', publicProofRouter())
+} else if (process.env.ENABLE_PROXY_MODULE === 'true') {
   router.use('/get', proxyGetApiRouter)
 }
 

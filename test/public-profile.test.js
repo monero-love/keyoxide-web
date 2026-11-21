@@ -34,3 +34,21 @@ test('WKD fallback and source URL use the bounded public fetcher',async()=>{
   await assert.rejects(module.fetchSignature('untrusted'))
  }finally{f.cleanup()}
 })
+
+test('ASP signed profile verifies through bounded retrieval and preserves fetch metadata',async()=>{
+ const {generateKeyPair,exportJWK,CompactSign}=await import('jose')
+ const {asp}=await import('doipjs')
+ const {publicKey,privateKey}=await generateKeyPair('ES256')
+ const jwk=await exportJWK(publicKey)
+ const fingerprint=await asp.computeJwkFingerprint(jwk)
+ const id='aspe:example.com:'+fingerprint
+ const payload={'http://ariadne.id/type':'profile','http://ariadne.id/version':0,'http://ariadne.id/name':'Disposable ASP fixture','http://ariadne.id/claims':['dns:example.com']}
+ const signed=await new CompactSign(Buffer.from(JSON.stringify(payload))).setProtectedHeader({alg:'ES256',kid:fingerprint,jwk}).sign(privateKey)
+ const module=await esmock('../src/server/index.js',{'../src/server/publicFetch.js':{fetchPublicBytes:async()=>Buffer.from(signed)}})
+ const profile=await module.generateAspeProfile(id)
+ assert.equal(profile.publicKey.fingerprint,fingerprint)
+ assert.equal(profile.publicKey.fetch.method,'aspe')
+ assert.equal(profile.publicKey.fetch.query,id)
+ assert.equal(profile.publicKey.fetch.resolvedUrl,'https://example.com/.well-known/aspe/id/'+fingerprint)
+ assert.equal(profile.personas[0].claims[0].uri,'dns:example.com')
+})

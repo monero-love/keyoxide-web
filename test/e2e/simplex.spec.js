@@ -32,3 +32,26 @@ test('built browser assets preserve opt-in, exact signed claim and no network ve
  expect(errors).toEqual([])
  expect(external).toEqual([])
 })
+
+for(const provider of ['github','dns']){
+ test(`ordinary ${provider} proof succeeds through the production browser bundle`,async({page})=>{
+  const errors=[];let proofs=0
+  page.on('pageerror',error=>errors.push(error.message))
+  await page.route('**/*',async route=>{
+   const url=route.request().url()
+   if(url==='https://api.github.com/gists/fixture-proof'||url.includes('/api/3/get/dns?')){
+    proofs++
+    const key=JSON.parse(await page.locator('kx-key').getAttribute('data-keydata'))
+    const proof='openpgp4fpr:'+key.fingerprint
+    const json=provider==='github'?{files:{'proof.md':{content:proof}}}:{domain:'fixture.example',records:{txt:[[proof]]}}
+    return route.fulfill({json})
+   }
+   if(!url.startsWith('http://127.0.0.1:3337/'))return route.fulfill({contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg"/>'})
+   return route.continue()
+  })
+  await page.goto('/'+provider)
+  await expect(page.locator('kx-claim')).toHaveAttribute('data-status','success')
+  expect(proofs).toBe(1)
+  expect(errors).toEqual([])
+ })
+}

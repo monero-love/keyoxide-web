@@ -1,3 +1,9 @@
+# 5.1.0-simplex.1-rc.2 (2026-11-21)
+
+Adds a restricted public HTTPS/DNS proof proxy, exact proxy-IP trust, health checks that remain available during rate limiting, and per-client quota regression tests. Ordinary GitHub and DNS proofs now have desktop/mobile browser coverage, and signed ASP retrieval has a compatibility test.
+
+Adds an immutable deployment-bundle builder, nginx configuration renderer, restricted Compose definition and isolated HTTPS outage/recovery rehearsal. See `deploy/README.md`. The live site is not changed automatically.
+
 # 5.1.0-simplex.1-rc.1 (2026-11-21)
 
 Private SimpleX local-verifier release candidate. Adds consent-based local request export and manual OpenPGP challenge verification. Hardens profile fetching, browser rendering, state persistence and local transport, upgrades cryptographic and application dependencies, and ships a restricted non-root image with corresponding source.
