@@ -1,0 +1,34 @@
+[Unit]
+Description=Keyoxide candidate %i
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=simple
+User=keyoxide
+Group=keyoxide
+WorkingDirectory=/opt/keyoxide-candidate/current/app
+# Reuse only the non-secret per-instance identity. Never load proof credentials.
+EnvironmentFile=/etc/keyoxide/%i.env
+EnvironmentFile=/opt/keyoxide-candidate/current/release.env
+EnvironmentFile=/etc/keyoxide/candidate-%i.env
+Environment=NODE_ENV=production HOST=127.0.0.1 TRUST_PROXY_IPS=127.0.0.1 LOG_FILE=false
+Environment=ENABLE_PROXY_MODULE=false ENABLE_SERVER_VERIFICATION=false ENABLE_PUBLIC_PROOF_PROXY=false
+Environment=NODE_OPTIONS=--max-old-space-size=256
+ExecStart=/opt/keyoxide-candidate/current/node/bin/node /opt/keyoxide-candidate/current/app/src/index.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=15
+MemoryMax=512M
+CPUQuota=100%
+TasksMax=128
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+[Install]
+WantedBy=multi-user.target

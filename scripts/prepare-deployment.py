@@ -23,7 +23,7 @@ steps=[]
 def run(name,command,**kwargs):
     print('Running '+name,flush=True)
     with (out/(name+'.log')).open('w') as log:
-        result=subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,**kwargs)
+        result=subprocess.run(command,stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,timeout=600,**kwargs)
     steps.append({'step':name,'exitCode':result.returncode})
     if result.returncode:raise SystemExit(f'{name} failed. See {out/name}.log. No deployment performed.')
 
@@ -41,6 +41,7 @@ run('container-smoke',['python3','scripts/container-smoke.py',image['Id']])
 run('https-rehearsal',['python3','scripts/deployment-smoke.py',image['Id'],'--nginx-image',NGINX])
 run('image-audit',[args.trivy,'image','--image-src','docker','--scanners','vuln','--exit-code','1','--severity','UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL','--format','json','--output',str(out/'image-audit.json'),image['Id']])
 run('image-sbom',[args.trivy,'image','--image-src','docker','--format','cyclonedx','--output',str(out/'image-sbom.cdx.json'),image['Id']])
+run('native-export',['python3','scripts/export-native.py',image['Id'],str(out/'native-release.tar.gz')])
 run('image-export',['docker','save','--output',str(out/'image.tar'),tag])
 (out/'checks.json').write_text(json.dumps(steps,indent=2)+'\n')
 def digest(path):
@@ -48,7 +49,7 @@ def digest(path):
     with path.open('rb') as stream:
         for block in iter(lambda:stream.read(1024*1024),b''):sha256.update(block)
     return sha256.hexdigest()
-manifest={'revision':sha,'branch':branch,'imageTag':tag,'imageId':image['Id'],'nginxRehearsalImage':NGINX,'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'tests':'53 application, 35 verifier, 6 browser','liveSiteModified':False,'artifacts':{p.name:digest(p) for p in sorted(out.iterdir()) if p.is_file()}}
+manifest={'revision':sha,'branch':branch,'imageTag':tag,'imageId':image['Id'],'nginxRehearsalImage':NGINX,'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'tests':'55 application, 35 verifier, 6 browser','liveSiteModified':False,'artifacts':{p.name:digest(p) for p in sorted(out.iterdir()) if p.is_file()}}
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 (out/'SHA256SUMS').write_text(''.join(digest(p)+'  '+p.name+'\n' for p in sorted(out.iterdir()) if p.is_file() and p.name!='SHA256SUMS'))
 print('PASS: deployment bundle ready at '+str(out),flush=True)

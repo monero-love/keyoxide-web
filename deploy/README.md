@@ -1,5 +1,7 @@
 # Deployment package for keyoxide.net
 
+**For the inspected live site, use [the systemd side-by-side rollout](KEYOXIDE-NET.md).** The live site uses systemd and existing account-backed verifiers. The Docker/Compose setup below is an alternative for an isolated standalone beta, not a replacement for its current virtual-host configuration.
+
 This package prepares the audited beta for a Linux host with nginx terminating HTTPS and Docker Compose running the app. It does not change DNS, contact SimpleX users, install services on the live host or deploy automatically. GitHub Actions remain disabled.
 
 ## Supported behavior

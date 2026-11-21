@@ -7,6 +7,9 @@ footer
       a(href="/util") Utilities
       |  • 
       a(href="/privacy") Privacy policy
+      if settings && settings.onion_url
+        |  •
+        a(href=settings.onion_url title="Open with Tor Browser") Onion site
       br
 
       | Keyoxide project: 

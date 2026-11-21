@@ -23,3 +23,6 @@ release-artifacts
 **/*.crt
 deploy/*.env
 deploy/generated
+
+**/__pycache__
+**/*.pyc
