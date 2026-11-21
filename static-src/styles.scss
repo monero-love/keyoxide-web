@@ -100,3 +100,15 @@ dialog p {
 dialog p:first-of-type {
     margin-top: 0;
 }
+
+/* Keep documentation commands readable on narrow screens without page overflow. */
+.article-content {
+    min-width: 0;
+    pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+    code {
+        overflow-wrap: anywhere;
+    }
+}
