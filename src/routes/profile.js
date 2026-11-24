@@ -27,6 +27,8 @@ You should also get your employer (if you work as a programmer) or school,
 if any, to sign a "copyright disclaimer" for the program, if necessary. For
 more information on this, and how to apply and follow the GNU AGPL, see <https://www.gnu.org/licenses/>.
 */
+import { isOnionClaim } from '../shared/onion.js'
+
 import express from 'express'
 import bodyParserImport from 'body-parser'
 import { rateLimit } from 'express-rate-limit'
@@ -39,6 +41,7 @@ import { isSimplexClaim } from '../shared/simplex.js'
 const router = express.Router()
 router.use((_req, res, next) => {
   res.locals.isSimplexClaim = isSimplexClaim
+  res.locals.isOnionClaim = isOnionClaim
   next()
 })
 const bodyParser = bodyParserImport.urlencoded({ extended: false, limit: '1mb', parameterLimit: 10 })

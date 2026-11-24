@@ -17,17 +17,19 @@ mixin generatePersona(persona, isPrimary)
         |  #{persona.description}
     each claim in persona.claims
       - const simplex = isSimplexClaim(claim.uri)
-      if simplex || claim.matches.length > 0
-        kx-claim.kx-item(data-claim=claim,data-status=simplex ? 'unchecked' : 'running',data-skip=simplex ? 'true' : undefined)
+      - const onion = typeof isOnionClaim === 'function' && isOnionClaim(claim.uri)
+      - const manual = simplex || onion
+      if manual || claim.matches.length > 0
+        kx-claim.kx-item(data-claim=claim,data-status=manual ? 'unchecked' : 'running',data-skip=manual ? 'true' : undefined)
           details(aria-label="Claim")
             summary
               .info
-                img(src=simplex ? '/static/img/link.svg' : 'https://design.keyoxide.org/brands/service-providers/_/icon.svg' alt='')
+                img(src=manual ? '/static/img/link.svg' : 'https://design.keyoxide.org/brands/service-providers/_/icon.svg' alt='')
                 p
-                  span.title= simplex ? 'SimpleX link' : claim.display.profileName
+                  span.title= onion ? 'Onion website' : simplex ? 'SimpleX link' : claim.display.profileName
                   span.subtitle-wrapper
                     |  [
-                    span.subtitle= simplex ? 'Not checked' : claim.display.serviceproviderName
+                    span.subtitle= manual ? 'Not checked' : claim.display.serviceproviderName
                     | ]
               .icons
                 .verificationStatus
@@ -42,7 +44,12 @@ mixin generatePersona(persona, isPrimary)
               .subsection
                 img(src='/static/img/link.png')
                 div
-                  if simplex
+                  if onion
+                    p This onion website proof has not been checked. Use the explicit Tor check.
+                    p
+                      a(href='/onion') How to add an onion website proof
+                    code= claim.uri
+                  else if simplex
                     p This SimpleX link has not been checked. A reusable contact address needs an explicit local check.
                     p
                       a(href="/simplex") How to add and check a SimpleX address

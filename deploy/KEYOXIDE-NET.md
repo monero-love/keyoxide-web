@@ -68,3 +68,11 @@ After reviewing the diff and starting both candidate services, install only the 
 Restore the saved nginx virtual-host config, validate it and reload nginx. All requests return to the still-running original services and their original assets. Verify HTTPS and onion operation, then stop only the two candidate services. Do not stop the original proof backends, change the Tor identity, rotate signing keys, alter firewall rules, or roll back verifier challenge state.
 
 Monitor the candidate units as well as the existing units. Existing nginx aggregate counters continue to cover all requests. Add candidate unit names to the existing systemd exporter allowlist during the authorized rollout, preserving its current entries. The application exposes revision-aware `/healthz` without logging profile paths or consuming rate-limit quota.
+
+## Onion profile proof transport
+
+The onion proof route is `/onion-proof/check`, outside the retained legacy `/api/` prefix. Enable it explicitly with `ENABLE_ONION_PROOFS=true` and `TOR_SOCKS_PORT=9050` in each candidate environment file. The SOCKS host is fixed to loopback. Use `socks5h` so the onion name is passed to Tor, never local DNS. The existing per-UID firewall needs a narrow TCP exception for `127.0.0.1:9050` before its private-address rejection, while preserving every other egress restriction. Keep the exception in the persisted firewall configuration too. Do not expose Tor's SOCKS port publicly.
+
+Use an exact nginx location for `/onion-proof/check` on each candidate port with a 30-second read timeout. The generic page timeout is too short for the bounded 20-second Tor fetch. No legacy API route is changed. Limit checks to four in-flight requests per candidate process and six requests per minute per client IP. The onion instance shares Tor's local source address, so its API quota is shared.
+
+The transport is disabled by default on other instances. It accepts only fixed-path v3 onion URLs with valid checksums, plain text up to 64 KiB, no redirects or compression, and normal TLS verification for HTTPS. It returns proof text to the consenting browser, which matches the signed profile's direct OpenPGP or ASP identifier. No private onion-service credentials are accepted and no response body is logged. See `/onion` for user instructions.

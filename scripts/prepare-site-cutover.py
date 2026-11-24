@@ -15,6 +15,7 @@ def cutover(source):
         # Existing account-backed verifiers and signing actor remain on the old
         # service. Legacy signature pages retain their matching perf1 assets.
         locations='\n'.join(f'    location {selector} {{ proxy_pass http://127.0.0.1:{old}; }}' for selector in ['= /sig','= /users/keyoxide','= /.well-known/webfinger','^~ /static/source/'])
+        locations+=f'\n    location = /onion-proof/check {{ proxy_pass http://127.0.0.1:{new}; proxy_connect_timeout 3s; proxy_read_timeout 30s; }}'
         locations+=f'\n    location / {{ proxy_pass http://127.0.0.1:{new}; proxy_connect_timeout 3s; proxy_read_timeout 15s; }}'
         source=source.replace(original,locations.strip())
         pattern=r'(location ~ \^/static/\[\^/\]\+\\\.\(js\|css\)\$ \{)([^{}]*proxy_pass http://127\.0\.0\.1:'+str(old)+r';[^{}]*)(\})'

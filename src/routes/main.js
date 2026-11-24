@@ -43,6 +43,11 @@ router.get('/apps', (req, res) => {
   res.render('apps', { title: 'Apps', meta: getMetaFromReq(req) })
 })
 
+router.get('/onion', (req, res) => {
+  const content = md.render(readFileSync('./content/onion.md', 'utf8'))
+  res.render('article', { title: 'Onion website proofs', content, meta: getMetaFromReq(req) })
+})
+
 router.get('/simplex', (req, res) => {
   const content = md.render(readFileSync('./content/simplex.md', 'utf8'))
   res.render('article', { title: 'SimpleX address checks', content, meta: getMetaFromReq(req) })

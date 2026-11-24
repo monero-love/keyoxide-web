@@ -27,6 +27,9 @@ You should also get your employer (if you work as a programmer) or school,
 if any, to sign a "copyright disclaimer" for the program, if necessary. For
 more information on this, and how to apply and follow the GNU AGPL, see <https://www.gnu.org/licenses/>.
 */
+import { isOnionClaim } from '../src/shared/onion.js';
+import { renderOnionClaim } from './onion-claim.js';
+
 import * as doipjs from 'doipjs';
 import { setSafeLink } from './safe-dom.js';
 import { isSimplexClaim } from '../src/shared/simplex.js';
@@ -49,7 +52,7 @@ export class Claim extends HTMLElement {
 
     async verify() {
         const value = JSON.parse(this.getAttribute('data-claim'));
-        if (isSimplexClaim(value.uri)) {
+        if (isSimplexClaim(value.uri) || isOnionClaim(value.uri)) {
             this.updateContent(JSON.stringify(value));
             return;
         }
@@ -67,6 +70,10 @@ export class Claim extends HTMLElement {
     updateContent(value) {
         const root = this;
         const claimJson = JSON.parse(value);
+        if (isOnionClaim(claimJson.uri)) {
+            renderOnionClaim(this, claimJson);
+            return;
+        }
         if (isSimplexClaim(claimJson.uri)) {
             renderSimplexClaim(this, claimJson);
             return;

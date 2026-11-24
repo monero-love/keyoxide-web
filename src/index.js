@@ -27,6 +27,8 @@ You should also get your employer (if you work as a programmer) or school,
 if any, to sign a "copyright disclaimer" for the program, if necessary. For
 more information on this, and how to apply and follow the GNU AGPL, see <https://www.gnu.org/licenses/>.
 */
+import { onionRouter } from './server/onionRouter.js'
+
 import express from 'express'
 import * as httpContext from 'express-http-context2'
 import { nanoid } from 'nanoid'
@@ -119,6 +121,7 @@ app.use(stringReplace({
 }))
 
 // Routes
+app.use('/onion-proof', onionRouter({ enabled: process.env.ENABLE_ONION_PROOFS === 'true', port: Number(process.env.TOR_SOCKS_PORT || 9050) }))
 app.use('/api', apiRoute)
 if ((process.env.ENABLE_MAIN_MODULE ?? 'true') === 'true') {
   app.use('/favicon.svg', express.static('./static/favicon.svg'))

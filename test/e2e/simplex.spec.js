@@ -55,3 +55,30 @@ for(const provider of ['github','dns']){
   expect(errors).toEqual([])
  })
 }
+
+
+test('onion proof requires consent, matches exact profile identity and never fetches directly',async({page})=>{
+ let requests=0;const external=[]
+ await page.route('**/*',async route=>{
+  const url=route.request().url()
+  if(url.endsWith('/onion-proof/check')){
+   requests++
+   const claim=JSON.parse(await page.locator('kx-claim').getAttribute('data-claim'))
+   return route.fulfill({json:{url:claim.uri,proof:requests===1?claim.proofs[0]:'openpgp4fpr:'+'f'.repeat(40)}})
+  }
+  if(!url.startsWith('http://127.0.0.1:3337/')){external.push(url);return route.abort()}
+  return route.continue()
+ })
+ await page.goto('/onion-fixture')
+ const claim=page.locator('kx-claim')
+ await expect(claim).toHaveAttribute('data-status','unchecked')
+ expect(requests).toBe(0)
+ await claim.locator('summary').click()
+ const button=claim.getByRole('button',{name:'Check onion proof through Tor'})
+ await expect(button).toBeDisabled()
+ await claim.getByRole('checkbox').check();await button.click()
+ await expect(claim).toHaveAttribute('data-status','success')
+ await expect(claim).toContainText('Proof matched via Tor')
+ await button.click();await expect(claim).toHaveAttribute('data-status','failed')
+ expect(requests).toBe(2);expect(external).toEqual([])
+})

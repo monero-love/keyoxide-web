@@ -1,3 +1,7 @@
+# 5.1.0-simplex.1-rc.4 (2026-11-24)
+
+Adds explicit onion website proofs for OpenPGP and ASP profiles. A consenting browser requests a fixed-path, checksum-validated v3 onion proof through the instance's bounded Tor transport, then matches complete identity-proof lines. No onion retrieval happens on profile load. Redirects, local DNS resolution, clearnet fallback, compressed responses and arbitrary fetch paths are excluded. The new `/onion` guide documents setup and the instance trust boundary. Existing homepage content is preserved.
+
 # 5.1.0-simplex.1-rc.2 (2026-11-21)
 
 Adds a restricted public HTTPS/DNS proof proxy, exact proxy-IP trust, health checks that remain available during rate limiting, and per-client quota regression tests. Ordinary GitHub and DNS proofs now have desktop/mobile browser coverage, and signed ASP retrieval has a compatibility test.

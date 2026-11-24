@@ -1,6 +1,6 @@
 {
   "name": "keyoxide-web",
-  "version": "5.1.0-simplex.1-rc.3",
+  "version": "5.1.0-simplex.1-rc.4",
   "description": "Verifying online identity with cryptography",
   "main": "./src/index.js",
   "type": "module",
@@ -23,6 +23,7 @@
     "openpgp": "6.3.3",
     "pug": "^3.0.2",
     "qrcode": "^1.4.4",
+    "socks-proxy-agent": "10.1.0",
     "string-replace-middleware": "^1.0.2",
     "winston": "^3.8.2"
   },

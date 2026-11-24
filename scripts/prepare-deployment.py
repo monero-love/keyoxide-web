@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Build, test, audit and export an immutable deployment bundle. Never deploys."""
-import argparse,datetime,hashlib,json,os,subprocess,tarfile,tempfile
+import argparse,datetime,hashlib,json,os,re,subprocess,tarfile,tempfile
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -49,7 +49,11 @@ def digest(path):
     with path.open('rb') as stream:
         for block in iter(lambda:stream.read(1024*1024),b''):sha256.update(block)
     return sha256.hexdigest()
-manifest={'revision':sha,'branch':branch,'imageTag':tag,'imageId':image['Id'],'nginxRehearsalImage':NGINX,'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'tests':'55 application, 35 verifier, 6 browser','liveSiteModified':False,'artifacts':{p.name:digest(p) for p in sorted(out.iterdir()) if p.is_file()}}
+gate=(out/'release-gate.log').read_text()
+counts=re.findall(r'^# tests (\d+)$',gate,re.MULTILINE)
+browser=re.findall(r'^\s+(\d+) passed \(',gate,re.MULTILINE)
+assert len(counts)==2 and len(browser)==1, 'Missing test counts in release evidence'
+manifest={'revision':sha,'branch':branch,'imageTag':tag,'imageId':image['Id'],'nginxRehearsalImage':NGINX,'builtAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'tests':f'{counts[0]} application, {counts[1]} verifier, {browser[0]} browser','liveSiteModified':False,'artifacts':{p.name:digest(p) for p in sorted(out.iterdir()) if p.is_file()}}
 (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 (out/'SHA256SUMS').write_text(''.join(digest(p)+'  '+p.name+'\n' for p in sorted(out.iterdir()) if p.is_file() and p.name!='SHA256SUMS'))
 print('PASS: deployment bundle ready at '+str(out),flush=True)
