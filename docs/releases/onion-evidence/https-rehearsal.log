@@ -1,0 +1,4 @@
+PASS trusted TLS, nginx configuration, security headers and exact release revision
+PASS ordinary pages/assets/source, restricted proof proxy and disabled legacy APIs
+PASS spoofed forwarding headers cannot bypass quotas, independent client stays available, health remains available
+PASS outage detection and recovery using the pinned image (local rollback rehearsal)

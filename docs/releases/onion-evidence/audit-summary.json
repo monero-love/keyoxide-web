@@ -1,0 +1,10 @@
+{
+  "revision": "93bda4eb713f9952c42e5f7b54e0c9c7dc4ba04e",
+  "version": "5.1.0-simplex.1-rc.5",
+  "tests": "67 application, 35 verifier, 8 browser",
+  "imageId": "sha256:7e986b211aea8d21d4d1cc3865ef8b0ea8a53b3bd133b7e43eda5bced67cd05b",
+  "nativeArchiveSHA256": "232cc1e98f733124c94bc9e9d8b787d3f48952745b08548ead42b99fec171b4c",
+  "imageVulnerabilities": 0,
+  "sourceSecretFindings": 0,
+  "scope": "Candidate only. The retained legacy proof backend and host OS are outside this image audit."
+}

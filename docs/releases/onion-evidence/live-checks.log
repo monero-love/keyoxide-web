@@ -1,0 +1,5 @@
+PASS live openpgp signed local fixture, consent, real Tor match, no automatic fetch, result layout
+PASS live asp signed local fixture, consent, real Tor match, no automatic fetch, result layout
+PASS live homepage preservation and onion guide 1280
+PASS live homepage preservation and onion guide 390
+PASS live homepage preservation and onion guide 320
