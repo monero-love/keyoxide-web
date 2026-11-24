@@ -79,6 +79,8 @@ test('onion proof requires consent, matches exact profile identity and never fet
  await claim.getByRole('checkbox').check();await button.click()
  await expect(claim).toHaveAttribute('data-status','success')
  await expect(claim).toContainText('Proof matched via Tor')
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
  await button.click();await expect(claim).toHaveAttribute('data-status','failed')
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true)
  expect(requests).toBe(2);expect(external).toEqual([])
 })
